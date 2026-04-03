@@ -1,0 +1,23 @@
+<resources>
+    <style name="TextStyle.Title" parent="TextAppearance.Material3.TitleMedium">
+        <item name="fontFamily">@font/poppins_bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextStyle.Subtitle" parent="TextAppearance.Material3.BodyMedium">
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextStyle.Subtitle2" parent="TextAppearance.Material3.BodyMedium">
+        <item name="fontFamily">@font/nunito</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextStyle.Title.2" parent="TextAppearance.Material3.TitleLarge">
+        <item name="fontFamily">@font/poppins_medium</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+</resources>

@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Esttufa</string>
+    <string name="logo_description">Logotipo do Aplicativo</string>
+    <string name="login_title">Faça seu Login</string>
+    <string name="hint_email">E-mail</string>
+    <string name="hint_senha">Senha</string>
+    <string name="esqueci_senha">Esqueci minha senha!</string>
+    <string name="btn_login">LOGIN</string>
+    <string name="btn_cadastrar">CADASTRAR</string>
+    <string name="cadastro_title">Faça seu cadastro</string>
+    <string name="hint_nome">Nome</string>
+    <string name="hint_sobrenome">Sobrenome</string>
+    <string name="hint_confirmar_senha">Confirmar Senha</string>
+    <string name="avatar_description">Avatar do Usuário</string>
+    <string name="boas_vindas">Olá, Gabriel 👋</string>
+    <string name="home_subtitulo">Veja como está o status de suas culturas</string>
+    <string name="empty_description">Ícone lista vazia</string>
+    <string name="empty_titulo">Nenhuma estufa encontrada</string>
+    <string name="empty_subtitulo">Você ainda não possui estufas\ncadastradas no momento</string>
+    <string name="cultura_image_description">Imagem da cultura</string>
+    <string name="seta_description">Ver detalhes</string>
+    <string name="arrow_description">Ícone de seta</string>
+</resources>

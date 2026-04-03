@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:layout_marginBottom="16dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="0dp"
+    app:strokeWidth="0dp">
+
+    <!-- CONTAINER PRINCIPAL -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- IMAGEM -->
+        <ImageView
+            android:id="@+id/ivCultura"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/img_tomate"/>
+
+        <!-- GRADIENTE -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_gravity="bottom"
+            android:background="@drawable/gradient_bottom"/>
+
+        <!-- TEXTO -->
+        <TextView
+            android:id="@+id/tvCulturaNome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tomate"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_gravity="bottom|start"
+            android:layout_margin="16dp"/>
+
+        <!-- BOTÃO (seu código) -->
+        <FrameLayout
+            android:layout_width="59dp"
+            android:layout_height="52dp"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp">
+
+            <!-- FUNDO -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_green_light"/>
+
+            <!-- FRENTE -->
+            <FrameLayout
+                android:layout_width="49dp"
+                android:layout_height="43dp"
+                android:layout_gravity="center"
+                android:background="@drawable/bg_green_dark"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackgroundBorderless">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_arrow_outward"
+                    android:tint="@color/light_foreground"/>
+            </FrameLayout>
+
+        </FrameLayout>
+
+    </FrameLayout>
+
+</com.google.android.material.card.MaterialCardView>
