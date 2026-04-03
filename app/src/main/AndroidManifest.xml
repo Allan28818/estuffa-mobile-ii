@@ -12,10 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Esttufa">
         <activity
-            android:name=".CulturaInfoActivity"
+            android:name=".HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".HomeActivity"
+            android:name=".CulturaInfoActivity"
             android:exported="false" />
         <activity
             android:name=".CadastroActivity"

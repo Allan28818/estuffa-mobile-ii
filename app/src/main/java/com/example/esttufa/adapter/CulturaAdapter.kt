@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.esttufa.R
-import com.example.esttufa.Cultura
+import com.example.esttufa.model.Cultura
 
 class CulturaAdapter(
     private val context: Context,

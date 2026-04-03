@@ -2,29 +2,29 @@ package com.example.esttufa
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.viewModels
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.example.esttufa.databinding.ActivityCadastroBinding
-import com.example.esttufa.databinding.ActivityMainBinding
 
 class CadastroActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityCadastroBinding
+
+    private lateinit var btnCadastrar: Button
+    private lateinit var btnLogin: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_cadastro)
 
-        binding = ActivityCadastroBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        // findViewById referenciando os botões pelo ID do XML
+        btnCadastrar = findViewById(R.id.btnCadastrar)
+        btnLogin     = findViewById(R.id.btnLogin)
 
-        binding.btnCadastrar.setOnClickListener {
+        btnCadastrar.setOnClickListener {
             startActivity(Intent(this, HomeActivity::class.java))
             finish()
         }
 
-        binding.btnLogin.setOnClickListener {
-            finish()
+        btnLogin.setOnClickListener {
+            finish() // volta para a MainActivity (Login)
         }
     }
 }

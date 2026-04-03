@@ -1,41 +1,49 @@
 package com.example.esttufa
 
-import android.os.Bundle
-import android.widget.ListView
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.esttufa.adapter.CulturaAdapter
-
-data class Cultura(
-    val nome: String,
-    val imagem: Int
-)
+import android.content.Intent
+import android.os.Bundle
+import android.view.View
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import com.example.esttufa.databinding.ActivityHomeBinding
+import com.example.esttufa.viewmodel.HomeViewModel
 
 class HomeActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityHomeBinding
+    private val viewModel: HomeViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_home)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        observeViewModel()
+        viewModel.loadCulturas()
+    }
+
+    private fun observeViewModel() {
+        viewModel.isLoading.observe(this) { carregando ->
+            binding.progressBar.visibility = if (carregando) View.VISIBLE else View.GONE
         }
 
-        val culturas = listOf(
-            Cultura("Tomate", R.drawable.img_tomate),
-            Cultura("Alface", R.drawable.img_alface),
-            Cultura("Rúcula", R.drawable.img_rucula)
-        )
+        viewModel.culturas.observe(this) { lista ->
+            val adapter = CulturaAdapter(this, lista)
+            binding.lvCulturas.adapter = adapter
 
-        val listView = findViewById<ListView>(R.id.lvCulturas)
+            binding.lvCulturas.setOnItemClickListener { _, _, position, _ ->
+                val cultura = lista[position]
+                val intent = Intent(this, CulturaInfoActivity::class.java)
+                intent.putExtra("cultura", cultura.nome)
+                startActivity(intent)
+            }
+        }
 
-        val adapter = CulturaAdapter(this, culturas)
-
-        listView.adapter = adapter
+        viewModel.isEmpty.observe(this) { vazio ->
+            binding.llEmptyState.visibility = if (vazio) View.VISIBLE else View.GONE
+            binding.lvCulturas.visibility   = if (vazio) View.GONE   else View.VISIBLE
+        }
     }
 }
