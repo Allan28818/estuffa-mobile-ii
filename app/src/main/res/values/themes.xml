@@ -1,6 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Base.Theme.Esttufa" parent="Theme.Material3.DayNight.NoActionBar">
+
         <item name="colorPrimary">@color/primary</item>
         <item name="colorSecondary">@color/secondary</item>
         <item name="colorTertiary">@color/tertiary</item>
@@ -11,6 +13,10 @@
         <item name="colorOnPrimary">@color/light_foreground</item>
         <item name="colorOnSurface">@color/text_primary</item>
         <item name="colorOnBackground">@color/text_primary</item>
+
+        <item name="colorSurfaceVariant">@color/card_background_light</item>
+        <item name="colorOutline">@color/text_secondary_light</item>
+
     </style>
 
     <style name="Theme.Esttufa" parent="Base.Theme.Esttufa" />

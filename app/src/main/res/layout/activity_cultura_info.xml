@@ -9,7 +9,6 @@
     android:padding="24dp"
     tools:context=".CulturaInfoActivity">
 
-    <!-- Header -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,6 +21,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:src="@drawable/ic_arrow_back"
+            app:tint="?attr/colorOnBackground"
             android:contentDescription="@string/back_description"
             android:clickable="true"
             android:focusable="true"/>
@@ -37,7 +37,6 @@
 
     </LinearLayout>
 
-    <!-- Loading -->
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
@@ -46,41 +45,36 @@
         android:layout_marginTop="48dp"
         android:visibility="gone"/>
 
-    <!-- Erro -->
     <TextView
         android:id="@+id/tvError"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
         android:gravity="center"
-        android:textColor="?attr/colorError"
+        android:textColor="@color/text_card"
         android:visibility="gone"
         style="@style/TextStyle.Subtitle"/>
 
-    <!-- Cards -->
     <LinearLayout
         android:id="@+id/llCards"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="32dp"
-        android:visibility="gone">
+        android:visibility="visible">
 
-        <!-- Linha 1 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <!-- Card Temperatura -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
-                android:layout_height="100dp"
+                android:layout_height="120dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="8dp"
-                app:cardCornerRadius="12dp"
-                app:cardBackgroundColor="?attr/colorSurfaceVariant"
-                app:strokeWidth="0dp">
+                app:cardCornerRadius="16dp"
+                app:cardBackgroundColor="?attr/colorSurfaceVariant">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -98,14 +92,14 @@
                             android:layout_width="16dp"
                             android:layout_height="16dp"
                             android:src="@drawable/ic_temperature"
-                            android:contentDescription="@string/temperature_description"/>
+                            app:tint="@color/text_card"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
                             android:text="@string/label_temperatura"
-                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:textColor="@color/text_card"
                             style="@style/TextStyle.Subtitle2"/>
 
                     </LinearLayout>
@@ -115,21 +109,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:textColor="?attr/colorOnSurface"
+                        android:textColor="@color/text_card"
                         style="@style/TextStyle.Title"/>
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Card Umidade -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
-                android:layout_height="100dp"
+                android:layout_height="120dp"
                 android:layout_weight="1"
                 android:layout_marginStart="8dp"
-                app:cardCornerRadius="12dp"
-                app:cardBackgroundColor="?attr/colorSurfaceVariant"
-                app:strokeWidth="0dp">
+                app:cardCornerRadius="16dp"
+                app:cardBackgroundColor="?attr/colorSurfaceVariant">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -147,14 +139,14 @@
                             android:layout_width="16dp"
                             android:layout_height="16dp"
                             android:src="@drawable/ic_humidity"
-                            android:contentDescription="@string/humidity_description"/>
+                            app:tint="@color/text_card"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
                             android:text="@string/label_umidade"
-                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:textColor="@color/text_card"
                             style="@style/TextStyle.Subtitle2"/>
 
                     </LinearLayout>
@@ -164,7 +156,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:textColor="?attr/colorOnSurface"
+                        android:textColor="@color/text_card"
                         style="@style/TextStyle.Title"/>
 
                 </LinearLayout>
@@ -172,22 +164,19 @@
 
         </LinearLayout>
 
-        <!-- Linha 2 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="16dp">
 
-            <!-- Card Luminosidade -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
-                android:layout_height="100dp"
+                android:layout_height="120dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="8dp"
-                app:cardCornerRadius="12dp"
-                app:cardBackgroundColor="?attr/colorSurfaceVariant"
-                app:strokeWidth="0dp">
+                app:cardCornerRadius="16dp"
+                app:cardBackgroundColor="?attr/colorSurfaceVariant">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -205,14 +194,14 @@
                             android:layout_width="16dp"
                             android:layout_height="16dp"
                             android:src="@drawable/ic_light"
-                            android:contentDescription="@string/light_description"/>
+                            app:tint="@color/text_card"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
                             android:text="@string/label_luminosidade"
-                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:textColor="@color/text_card"
                             style="@style/TextStyle.Subtitle2"/>
 
                     </LinearLayout>
@@ -220,39 +209,38 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:layout_marginTop="8dp">
+                        android:gravity="bottom">
 
                         <TextView
                             android:id="@+id/tvLuminosidade"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="?attr/colorOnSurface"
+                            android:textColor="@color/text_card"
                             style="@style/TextStyle.Title"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
-                            android:text="@string/label_ppdf"
-                            android:textColor="?attr/colorOnSurfaceVariant"
-                            style="@style/TextStyle.Subtitle2"/>
+                            android:layout_marginBottom="3dp"
+                            android:text="PPFD"
+                            android:textColor="@color/text_card"
+                            style="@style/TextStyle.Subtitle" />
 
                     </LinearLayout>
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Card Irrigação -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
-                android:layout_height="100dp"
+                android:layout_height="120dp"
                 android:layout_weight="1"
                 android:layout_marginStart="8dp"
-                app:cardCornerRadius="12dp"
-                app:cardBackgroundColor="?attr/colorSurfaceVariant"
-                app:strokeWidth="0dp">
+                app:cardCornerRadius="16dp"
+                app:cardBackgroundColor="?attr/colorSurfaceVariant">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -270,14 +258,14 @@
                             android:layout_width="16dp"
                             android:layout_height="16dp"
                             android:src="@drawable/ic_clock"
-                            android:contentDescription="@string/irrigacao_description"/>
+                            app:tint="@color/text_card"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
                             android:text="@string/label_irrigacao"
-                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:textColor="@color/text_card"
                             style="@style/TextStyle.Subtitle2"/>
 
                     </LinearLayout>
@@ -287,16 +275,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:textColor="?attr/colorOnSurface"
+                        android:textColor="@color/text_card"
                         style="@style/TextStyle.Title"/>
 
                     <TextView
                         android:id="@+id/tvClassName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_bold"
+                        android:layout_marginTop="4dp"
                         android:textSize="12sp"
-                        android:textColor="?attr/colorOnSurfaceVariant"/>
+                        android:textColor="@color/text_card"
+                        android:visibility="gone"/>
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

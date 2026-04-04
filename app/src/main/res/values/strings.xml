@@ -24,7 +24,7 @@
     <string name="label_temperatura">Temperatura</string>
     <string name="label_umidade">Umidade</string>
     <string name="label_luminosidade">Luminosidade</string>
-    <string name="label_ppdf">PPDF</string>
+    <string name="label_ppfd">PPFD</string>
     <string name="label_irrigacao">Irrigação</string>
     <string name="temperature_description">Ícone temperatura</string>
     <string name="humidity_description">Ícone umidade</string>

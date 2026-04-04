@@ -2,10 +2,7 @@ package com.example.esttufa
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.esttufa.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -25,7 +22,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnCadastrar.setOnClickListener {
             startActivity(Intent(this, CadastroActivity::class.java))
-            finish()
         }
     }
 }
