@@ -20,4 +20,14 @@
     <string name="cultura_image_description">Imagem da cultura</string>
     <string name="seta_description">Ver detalhes</string>
     <string name="arrow_description">Ícone de seta</string>
+    <string name="back_description">Voltar</string>
+    <string name="label_temperatura">Temperatura</string>
+    <string name="label_umidade">Umidade</string>
+    <string name="label_luminosidade">Luminosidade</string>
+    <string name="label_ppdf">PPDF</string>
+    <string name="label_irrigacao">Irrigação</string>
+    <string name="temperature_description">Ícone temperatura</string>
+    <string name="humidity_description">Ícone umidade</string>
+    <string name="light_description">Ícone luminosidade</string>
+    <string name="irrigacao_description">Ícone de irrigação</string>
 </resources>

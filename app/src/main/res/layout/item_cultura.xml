@@ -54,16 +54,15 @@
                 android:layout_height="43dp"
                 android:layout_gravity="center"
                 android:background="@drawable/bg_green_dark"
-                android:clickable="true"
-                android:focusable="true"
+                android:clickable="false"
+                android:focusable="false"
                 android:foreground="?attr/selectableItemBackgroundBorderless">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_arrow_outward"
-                    android:tint="@color/light_foreground"/>
+                    android:src="@drawable/ic_arrow_outward"/>
 
             </FrameLayout>
 
