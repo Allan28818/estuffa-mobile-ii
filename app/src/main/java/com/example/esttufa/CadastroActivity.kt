@@ -14,7 +14,6 @@ class CadastroActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cadastro)
 
-        // findViewById referenciando os botões pelo ID do XML
         btnCadastrar = findViewById(R.id.btnCadastrar)
         btnLogin     = findViewById(R.id.btnLogin)
 
@@ -24,7 +23,7 @@ class CadastroActivity : AppCompatActivity() {
         }
 
         btnLogin.setOnClickListener {
-            finish() // volta para a MainActivity (Login)
+            finish()
         }
     }
 }
