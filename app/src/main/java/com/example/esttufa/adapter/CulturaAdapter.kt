@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.example.esttufa.R
 import com.example.esttufa.model.Cultura
 
@@ -24,8 +25,16 @@ class CulturaAdapter(
         val nome = view.findViewById<TextView>(R.id.tvCulturaNome)
         val imagem = view.findViewById<ImageView>(R.id.ivCultura)
 
-        nome.text = cultura.nome
-        imagem.setImageResource(cultura.imagem)
+        nome.text = when (cultura.id) {
+            "lettuce" -> "Alface"
+            "arugula" -> "Rúcula"
+            "tomato"  -> "Tomate"
+            else -> cultura.name
+        }
+
+        Glide.with(context)
+            .load(cultura.url)
+            .into(imagem)
 
         return view
     }

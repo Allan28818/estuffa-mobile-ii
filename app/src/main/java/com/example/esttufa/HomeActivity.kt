@@ -36,7 +36,7 @@ class HomeActivity : AppCompatActivity() {
             binding.lvCulturas.setOnItemClickListener { _, _, position, _ ->
                 val cultura = lista[position]
                 val intent = Intent(this, CulturaInfoActivity::class.java)
-                intent.putExtra("cultura", cultura.nome)
+                intent.putExtra("cultura", cultura.id)
                 startActivity(intent)
             }
         }

@@ -19,16 +19,22 @@ class CulturaInfoActivity : AppCompatActivity() {
         binding = ActivityCulturaInfoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val culturaPt = intent.getStringExtra("cultura") ?: ""
+        val culturaEn = intent.getStringExtra("cultura") ?: ""
 
-        val culturaEn = when (culturaPt) {
-            "Alface" -> "lettuce"
-            "Rúcula" -> "arugula"
-            "Tomate" -> "tomato"
-            else     -> "tomato"
+        val culturaPt = when (culturaEn.lowercase()) {
+            "lettuce" -> "Alface"
+            "arugula" -> "Rúcula"
+            "tomato"  -> "Tomate"
+            else      -> culturaEn
         }
 
-        binding.tvCulturaTitle.text = "Cultura da ${culturaPt.lowercase()}"
+        val artigo = when (culturaPt) {
+            "Alface", "Rúcula" -> "da"
+            "Tomate" -> "do"
+            else -> "de"
+        }
+
+        binding.tvCulturaTitle.text = "Cultura $artigo ${culturaPt.lowercase()}"
         binding.ivBack.setOnClickListener { finish() }
 
         observeViewModel()

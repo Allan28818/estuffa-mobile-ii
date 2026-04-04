@@ -1,7 +1,7 @@
 package com.example.esttufa.repository
 
 import com.example.esttufa.model.IrrigationResponse
-import com.example.esttufa.network.RetrofitClient
+import com.example.esttufa.model.RetrofitClient
 
 class IrrigationRepository {
 
