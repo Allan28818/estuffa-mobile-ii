@@ -12,11 +12,11 @@
     <string name="hint_sobrenome">Sobrenome</string>
     <string name="hint_confirmar_senha">Confirmar Senha</string>
     <string name="avatar_description">Avatar do Usuário</string>
-    <string name="boas_vindas">Olá, Gabriel 👋</string>
-    <string name="home_subtitulo">Veja como está o status de suas culturas</string>
+    <string name="boas_vindas">Olá, &lt;b&gt;Gabriel&lt;/b&gt; 👋</string>
+    <string name="home_subtitulo">Veja como estão suas estufas.</string>
     <string name="empty_description">Ícone lista vazia</string>
-    <string name="empty_titulo">Nenhuma estufa encontrada</string>
-    <string name="empty_subtitulo">Você ainda não possui estufas\ncadastradas no momento</string>
+    <string name="empty_titulo">Nenhuma estufa por aqui :(</string>
+    <string name="empty_subtitulo">Monitore suas culturas em tempo real. Toque no botão abaixo para adicionar sua primeira estufa.</string>
     <string name="cultura_image_description">Imagem da cultura</string>
     <string name="seta_description">Ver detalhes</string>
     <string name="arrow_description">Ícone de seta</string>
@@ -30,4 +30,11 @@
     <string name="humidity_description">Ícone umidade</string>
     <string name="light_description">Ícone luminosidade</string>
     <string name="irrigacao_description">Ícone de irrigação</string>
+
+    <string name="title_nova_estufa">Nova Estufa</string>
+    <string name="desc_nova_estufa">Preencha os dados abaixo para configurar e iniciar o monitoramento inteligente.</string>
+    <string name="hint_nome_estufa">Nome da Estufa</string>
+    <string name="hint_cultura_interna">Cultura Interna</string>
+    <string name="info_cultura">Cada estufa suporta apenas uma cultura por vez. A IA adaptará os sensores automaticamente para a planta escolhida.</string>
+    <string name="btn_criar_estufa">CRIAR ESTUFA</string>
 </resources>

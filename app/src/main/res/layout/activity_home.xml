@@ -6,105 +6,151 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp"
+    android:background="?android:attr/colorBackground"
+    android:fitsSystemWindows="true"
     tools:context=".HomeActivity">
 
+    <!-- Cabeçalho -->
     <LinearLayout
         android:id="@+id/llHeader"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_marginTop="16dp"
+        android:padding="24dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivAvatar"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:src="@drawable/avatar"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
             android:contentDescription="@string/avatar_description"/>
 
-        <TextView
-            android:id="@+id/tvBoasVindas"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:text="@string/boas_vindas"
-            android:textColor="?attr/colorOnBackground"
-            style="@style/TextStyle.Title"/>
+            android:orientation="vertical"
+            android:layout_marginStart="16dp">
+
+            <TextView
+                android:id="@+id/tvBoasVindas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/boas_vindas"
+                android:textColor="?attr/colorOnBackground"
+                android:textSize="20sp"
+                style="@style/TextStyle.Title"/>
+
+            <TextView
+                android:id="@+id/tvSubtitulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/home_subtitulo"
+                android:textColor="?attr/colorOnBackground"
+                android:textSize="16sp"
+                android:alpha="0.7"
+                style="@style/TextStyle.Subtitle"/>
+        </LinearLayout>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tvSubtitulo"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textSize="16sp"
-        android:text="@string/home_subtitulo"
-        android:textColor="?attr/colorOnBackground"
-        style="@style/TextStyle.Subtitle"
-        app:layout_constraintTop_toBottomOf="@id/llHeader"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
+    <!-- ProgressBar de Carregamento -->
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/tvSubtitulo"
+        app:layout_constraintTop_toBottomOf="@id/llHeader"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
+    <!-- Estado Vazio -->
     <LinearLayout
         android:id="@+id/llEmptyState"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
+        android:padding="40dp"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/llHeader"
+        app:layout_constraintBottom_toTopOf="@+id/fabAddEsttufa"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/ic_empty"
-            android:contentDescription="@string/empty_description"/>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            app:cardCornerRadius="36dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="?attr/colorSurface"
+            app:strokeWidth="1dp"
+            app:strokeColor="#DDDDDD">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="30dp"
+                android:src="@drawable/ic_empty_greenhouse"
+                android:alpha="0.8"
+                app:tint="@color/text_secondary_light"
+                android:contentDescription="@string/empty_description"/>
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="32dp"
             android:text="@string/empty_titulo"
             android:textColor="?attr/colorOnBackground"
-            style="@style/TextStyle.Subtitle"/>
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            style="@style/TextStyle.Title"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             android:gravity="center"
             android:text="@string/empty_subtitulo"
             android:textColor="?attr/colorOnBackground"
+            android:alpha="0.6"
+            android:lineSpacingExtra="4dp"
             style="@style/TextStyle.Subtitle"/>
     </LinearLayout>
 
+    <!-- Lista de Culturas -->
     <ListView
         android:id="@+id/lvCulturas"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
+        android:paddingHorizontal="24dp"
+        android:clipToPadding="false"
         android:divider="@null"
-        android:dividerHeight="10dp"
-        app:layout_constraintTop_toBottomOf="@id/progressBar"
+        android:dividerHeight="16dp"
+        app:layout_constraintTop_toBottomOf="@id/llHeader"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- FAB Redondo -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddEsttufa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        android:src="@android:drawable/ic_input_add"
+        app:backgroundTint="@color/tertiary"
+        app:tint="@android:color/white"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="Adicionar estufa"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
