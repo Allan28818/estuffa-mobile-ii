@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "951963754491",
+    "project_id": "esttufa-ai",
+    "storage_bucket": "esttufa-ai.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951963754491:android:ec395338d085a62829755e",
+        "android_client_info": {
+          "package_name": "com.example.esttufa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUNc1_9YIeUoac7Ejcz-_981oywWzejIo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

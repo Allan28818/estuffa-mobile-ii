@@ -44,8 +44,8 @@ Detailed module and file map: `PROJECT_SPEC.md`
 
 #### Story 1.1: Configurar Firebase Auth
 
-Status: Planned
-Started at: Pending
+Status: Done
+Started at: 2026-06-13 18:54
 
 Acceptance criteria:
 
@@ -54,7 +54,7 @@ Acceptance criteria:
 
 Validation:
 
-- Pending
+- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-13.
 
 #### Story 1.2: Anexar token Firebase às requisições
 
