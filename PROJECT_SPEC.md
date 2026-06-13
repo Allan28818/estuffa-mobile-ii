@@ -123,7 +123,8 @@ Responsibility:
 Important files:
 
 - `HomeViewModel.kt`: listagem e estado vazio/loading.
-- `CadastroEstufaViewModel.kt`: criação e mapeamento PT -> EN.
+- `CadastroEstufaViewModel.kt`: criação, mapeamento PT -> EN e mensagem
+  específica para rejeições HTTP `422`.
 - `LoginViewModel.kt`: login Firebase.
 - `CadastroViewModel.kt`: registro e atualização de perfil.
 - `CulturaInfoViewModel.kt`: consulta de irrigação.

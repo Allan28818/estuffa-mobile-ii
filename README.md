@@ -178,8 +178,8 @@ Validation:
 
 #### Story 4.1: Criar estufa pela API
 
-Status: Planned
-Started at: Pending
+Status: Done
+Started at: 2026-06-13 19:22
 
 Acceptance criteria:
 
@@ -189,7 +189,7 @@ Acceptance criteria:
 
 Validation:
 
-- Pending
+- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-13.
 
 #### Story 4.2: Listar estufas do usuário
 
