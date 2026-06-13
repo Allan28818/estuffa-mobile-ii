@@ -73,8 +73,8 @@ Validation:
 
 #### Story 1.3: Integrar autenticação ao Retrofit
 
-Status: Planned
-Started at: Pending
+Status: Done
+Started at: 2026-06-13 19:08
 
 Acceptance criteria:
 
@@ -83,7 +83,7 @@ Acceptance criteria:
 
 Validation:
 
-- Pending
+- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-13.
 
 #### Story 1.4: Encerrar sessão em resposta 401
 
