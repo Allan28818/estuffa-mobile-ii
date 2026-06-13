@@ -194,8 +194,8 @@ Validation:
 
 #### Story 4.2: Listar estufas do usuário
 
-Status: Planned
-Started at: Pending
+Status: Done
+Started at: 2026-06-13 19:44
 
 Acceptance criteria:
 
@@ -205,7 +205,7 @@ Acceptance criteria:
 
 Validation:
 
-- Pending
+- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL.
 
 #### Story 4.3: Atualizar Home e abrir detalhes
 

@@ -24,8 +24,7 @@ class HomeActivity : AppCompatActivity() {
         setupUI()
         observeViewModel()
 
-        // Chamada inicial para carregar dados (via ViewModel)
-        viewModel.loadCulturas()
+        viewModel.loadStoves()
     }
 
     private fun setupUI() {
@@ -48,15 +47,15 @@ class HomeActivity : AppCompatActivity() {
             binding.progressBar.visibility = if (carregando) View.VISIBLE else View.GONE
         }
 
-        // Observa a lista de culturas
-        viewModel.culturas.observe(this) { lista ->
-            val adapter = CulturaAdapter(this, lista)
+        viewModel.stoves.observe(this) { stoves ->
+            val adapter = CulturaAdapter(this, stoves)
             binding.lvCulturas.adapter = adapter
 
             binding.lvCulturas.setOnItemClickListener { _, _, position, _ ->
-                val cultura = lista[position]
+                val stove = stoves[position]
                 val intent = Intent(this, CulturaInfoActivity::class.java)
-                intent.putExtra("cultura", cultura.id)
+                intent.putExtra("cultura", stove.crop)
+                intent.putExtra("stove_id", stove.id)
                 startActivity(intent)
             }
         }

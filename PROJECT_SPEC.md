@@ -80,10 +80,12 @@ Responsibility:
 
 Important files:
 
-- `HomeActivity.kt`: lista, empty state, saudação e navegação.
+- `HomeActivity.kt`: observa `StoveResponse`, renderiza lista/empty state e
+  abre detalhes.
 - `CadastroEstufaActivity.kt`: valida o formulário, observa a criação e retorna
   `RESULT_OK` para recarregar a Home.
-- `CulturaAdapter.kt`: nome da estufa e imagem local por cultura.
+- `CulturaAdapter.kt`: renderiza nome da estufa e drawable local por cultura,
+  sem URL remota.
 - `CulturaInfoActivity.kt`: sensores, câmera e consulta de irrigação.
 
 Public interfaces:
@@ -123,7 +125,7 @@ Responsibility:
 
 Important files:
 
-- `HomeViewModel.kt`: listagem e estado vazio/loading.
+- `HomeViewModel.kt`: lista estufas e publica estados vazio/loading.
 - `CadastroEstufaViewModel.kt`: criação, mapeamento PT -> EN e mensagem
   específica para rejeições HTTP `422`.
 - `LoginViewModel.kt`: login Firebase e tradução de falhas comuns.

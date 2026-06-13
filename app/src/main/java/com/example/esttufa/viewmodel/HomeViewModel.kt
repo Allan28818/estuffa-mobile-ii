@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.esttufa.model.Cultura
+import com.example.esttufa.model.StoveResponse
 import com.example.esttufa.repository.CulturaRepository
 import kotlinx.coroutines.launch
 
@@ -12,8 +12,8 @@ class HomeViewModel : ViewModel() {
 
     private val repository = CulturaRepository()
 
-    private val _culturas = MutableLiveData<List<Cultura>>()
-    val culturas: LiveData<List<Cultura>> = _culturas
+    private val _stoves = MutableLiveData<List<StoveResponse>>()
+    val stoves: LiveData<List<StoveResponse>> = _stoves
 
     private val _isEmpty = MutableLiveData<Boolean>()
     val isEmpty: LiveData<Boolean> = _isEmpty
@@ -21,15 +21,14 @@ class HomeViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    fun loadCulturas() {
+    fun loadStoves() {
         viewModelScope.launch {
             _isLoading.value = true
 
-            val result = repository.getCulturas()
-            val lista = result.getOrDefault(emptyList())
+            val stoveList = repository.getStoves().getOrDefault(emptyList())
 
-            _culturas.value = lista
-            _isEmpty.value = lista.isEmpty()
+            _stoves.value = stoveList
+            _isEmpty.value = stoveList.isEmpty()
 
             _isLoading.value = false
         }
