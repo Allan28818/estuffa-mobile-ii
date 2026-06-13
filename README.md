@@ -209,8 +209,8 @@ Validation:
 
 #### Story 4.3: Atualizar Home e abrir detalhes
 
-Status: Planned
-Started at: Pending
+Status: Done
+Started at: 2026-06-13 19:47
 
 Acceptance criteria:
 
@@ -220,7 +220,7 @@ Acceptance criteria:
 
 Validation:
 
-- Pending
+- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL.
 
 #### Story 4.4: Remover contrato legado
 
