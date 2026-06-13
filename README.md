@@ -103,7 +103,7 @@ Validation:
 
 #### Story 2.1: Mapear requests e responses de estufas
 
-Status: Processing
+Status: Done
 Started at: 2026-06-13 19:10
 
 Acceptance criteria:
@@ -113,7 +113,7 @@ Acceptance criteria:
 
 Validation:
 
-- Pending
+- Contratos Kotlin revisados contra a spec em 2026-06-13.
 
 #### Story 2.2: Expor endpoints CRUD no Retrofit
 

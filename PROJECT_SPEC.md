@@ -210,8 +210,9 @@ Important files:
   aciona o encerramento global da sessão em respostas `401`.
 - `ApiService.kt`: contrato REST.
 - `StoveRequest.kt`: bodies de criação e edição.
-- `StoveResponse.kt`: representação remota de uma estufa.
-- `StoveListResponse.kt`: envelope da listagem.
+- `StoveResponse.kt`: mapeia identidade, nome, cultura, proprietário e
+  timestamps retornados pela API.
+- `StoveListResponse.kt`: mapeia o envelope `{ "stoves": [...] }`.
 
 Public interfaces:
 
