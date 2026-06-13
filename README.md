@@ -189,7 +189,8 @@ Acceptance criteria:
 
 Validation:
 
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-13.
+- `gradlew.bat assembleDebug --console=plain --stacktrace`: BUILD SUCCESSFUL
+  com ViewModel e Activity integrados.
 
 #### Story 4.2: Listar estufas do usuário
 
