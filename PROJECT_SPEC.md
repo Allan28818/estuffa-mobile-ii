@@ -208,7 +208,7 @@ Important files:
   logging para compartilhar o header entre todos os endpoints.
 - `AuthInterceptor.kt`: obtém o ID token sem bloquear requisições públicas e
   aciona o encerramento global da sessão em respostas `401`.
-- `ApiService.kt`: contrato REST.
+- `ApiService.kt`: contrato REST de irrigação e CRUD completo de estufas.
 - `StoveRequest.kt`: bodies de criação e edição.
 - `StoveResponse.kt`: mapeia identidade, nome, cultura, proprietário e
   timestamps retornados pela API.

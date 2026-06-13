@@ -117,7 +117,7 @@ Validation:
 
 #### Story 2.2: Expor endpoints CRUD no Retrofit
 
-Status: Processing
+Status: Done
 Started at: 2026-06-13 19:10
 
 Acceptance criteria:
@@ -126,7 +126,7 @@ Acceptance criteria:
 
 Validation:
 
-- Pending
+- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-13.
 
 #### Story 2.3: Encapsular CRUD no repository
 
