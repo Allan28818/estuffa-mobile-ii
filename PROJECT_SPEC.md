@@ -164,7 +164,8 @@ Responsibility:
 
 Important files:
 
-- `StoveRepository.kt`: CRUD completo de estufas.
+- `StoveRepository.kt`: CRUD completo com `ApiService` injetável e resultados
+  explícitos para a camada de aplicação.
 - `IrrigationRepository.kt`: consulta de irrigação.
 
 Public interfaces:

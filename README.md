@@ -130,8 +130,8 @@ Validation:
 
 #### Story 2.3: Encapsular CRUD no repository
 
-Status: Planned
-Started at: Pending
+Status: Done
+Started at: 2026-06-13 19:19
 
 Acceptance criteria:
 
@@ -140,7 +140,7 @@ Acceptance criteria:
 
 Validation:
 
-- Pending
+- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-13.
 
 ### Epic 3: Autenticação de usuário
 
