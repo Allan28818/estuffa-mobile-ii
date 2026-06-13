@@ -257,5 +257,6 @@ Validation:
 ## Decision Log
 
 - 2026-06-13: manter MVVM leve e os layouts existentes para limitar o escopo.
-- 2026-06-13: usar o refresh automático de `getIdToken(false)` do Firebase.
+- 2026-06-13: forçar `getIdToken(true)` para cumprir o contrato de token
+  atualizado definido pela integração.
 - 2026-06-13: tratar `401` como evento transversal de encerramento de sessão.

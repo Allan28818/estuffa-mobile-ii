@@ -14,7 +14,7 @@ class AuthInterceptor(
         val request = chain.request()
         val user = firebaseAuth.currentUser
         val token = runCatching {
-            user?.let { Tasks.await(it.getIdToken(false)).token }
+            user?.let { Tasks.await(it.getIdToken(true)).token }
         }.getOrNull()
 
         val requestWithAuthentication = if (token.isNullOrBlank()) {
