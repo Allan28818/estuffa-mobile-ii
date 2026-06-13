@@ -146,8 +146,8 @@ Validation:
 
 #### Story 3.1: Entrar com email e senha
 
-Status: Planned
-Started at: Pending
+Status: Done
+Started at: 2026-06-13 19:23
 
 Acceptance criteria:
 
@@ -157,7 +157,7 @@ Acceptance criteria:
 
 Validation:
 
-- Pending
+- `gradlew.bat assembleDebug --console=plain --stacktrace`: BUILD SUCCESSFUL.
 
 #### Story 3.2: Criar conta e perfil
 
