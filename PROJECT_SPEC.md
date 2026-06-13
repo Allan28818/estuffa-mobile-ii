@@ -87,6 +87,8 @@ Important files:
 - `CulturaAdapter.kt`: renderiza nome da estufa e drawable local por cultura,
   sem URL remota.
 - `CulturaInfoActivity.kt`: sensores, câmera e consulta de irrigação.
+- `AndroidManifest.xml`: permissões do app; câmera declarada como hardware
+  opcional para compatibilidade com dispositivos sem o recurso.
 
 Public interfaces:
 
@@ -106,9 +108,9 @@ Data flow:
 
 Validation:
 
-- Tests: mapeamento de cultura para drawable.
-- Manual checks: criação, recarga e abertura de detalhes.
-- Known gaps: sensores e câmera exigem dispositivo.
+- Tests: build, lint e smoke em emulador.
+- Manual checks: criação, recarga, imagem local e abertura de detalhes.
+- Known gaps: captura real da câmera não foi exercitada.
 
 Refactoring notes:
 
@@ -239,8 +241,8 @@ Data flow:
 Validation:
 
 - Tests: interceptor com doubles quando o desenho permitir.
-- Manual checks: header Authorization nos logs de debug.
-- Known gaps: integração depende de sessão Firebase válida.
+- Manual checks: autenticação e CRUD validados contra produção.
+- Known gaps: não há teste unitário isolado do interceptor.
 
 Refactoring notes:
 

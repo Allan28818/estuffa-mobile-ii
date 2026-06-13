@@ -241,8 +241,8 @@ Validation:
 
 #### Story 5.1: Validar build e fluxo integrado
 
-Status: Planned
-Started at: Pending
+Status: Done
+Started at: 2026-06-13 19:58
 
 Acceptance criteria:
 
@@ -252,7 +252,14 @@ Acceptance criteria:
 
 Validation:
 
-- Pending
+- `gradlew.bat testDebugUnitTest --console=plain`: BUILD SUCCESSFUL.
+- `gradlew.bat lintDebug --console=plain`: BUILD SUCCESSFUL.
+- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL.
+- OpenAPI de produção confirmou rotas, Bearer auth, DTOs e culturas.
+- Smoke REST confirmou `401`, `201`, list/get/update/delete, `422` e irrigação.
+- Smoke no emulador confirmou validações, login, auto-login, empty state,
+  criação, recarga, imagem local e detalhes com irrigação.
+- Conta e estufas temporárias removidas após os testes.
 
 ## Decision Log
 
