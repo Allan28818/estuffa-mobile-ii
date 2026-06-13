@@ -58,8 +58,8 @@ Validation:
 
 #### Story 1.2: Anexar token Firebase às requisições
 
-Status: Planned
-Started at: Pending
+Status: Done
+Started at: 2026-06-13 19:05
 
 Acceptance criteria:
 
@@ -69,9 +69,23 @@ Acceptance criteria:
 
 Validation:
 
+- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-13.
+
+#### Story 1.3: Integrar autenticação ao Retrofit
+
+Status: Planned
+Started at: Pending
+
+Acceptance criteria:
+
+- O interceptor de autenticação executa antes do logging.
+- Todas as chamadas do `ApiService` compartilham a política de token.
+
+Validation:
+
 - Pending
 
-#### Story 1.3: Encerrar sessão em resposta 401
+#### Story 1.4: Encerrar sessão em resposta 401
 
 Status: Planned
 Started at: Pending

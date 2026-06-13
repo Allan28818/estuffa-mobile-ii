@@ -203,7 +203,8 @@ Important files:
 
 - `app/build.gradle.kts`: dependências Android, Retrofit e Firebase Auth.
 - `RetrofitClient.kt`: configuração única de Retrofit/OkHttp.
-- `AuthInterceptor.kt`: token Firebase e resposta não autorizada.
+- `AuthInterceptor.kt`: obtém o ID token sem bloquear requisições públicas
+  quando a sessão ou o token estão indisponíveis.
 - `ApiService.kt`: contrato REST.
 - `StoveRequest.kt`: bodies de criação e edição.
 - `StoveResponse.kt`: representação remota de uma estufa.
