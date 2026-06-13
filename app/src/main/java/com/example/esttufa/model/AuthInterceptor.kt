@@ -6,28 +6,35 @@ import okhttp3.Interceptor
 import okhttp3.Response
 
 class AuthInterceptor(
-    private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance(),
+    private val onUnauthorized: () -> Unit = {}
 ) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        val user = firebaseAuth.currentUser ?: return chain.proceed(chain.request())
+        val request = chain.request()
+        val user = firebaseAuth.currentUser
         val token = runCatching {
-            Tasks.await(user.getIdToken(false)).token
+            user?.let { Tasks.await(it.getIdToken(false)).token }
         }.getOrNull()
 
-        if (token.isNullOrBlank()) {
-            return chain.proceed(chain.request())
+        val requestWithAuthentication = if (token.isNullOrBlank()) {
+            request
+        } else {
+            request.newBuilder()
+                .header(AUTHORIZATION_HEADER, "Bearer $token")
+                .build()
         }
 
-        val authenticatedRequest = chain.request()
-            .newBuilder()
-            .header(AUTHORIZATION_HEADER, "Bearer $token")
-            .build()
+        val response = chain.proceed(requestWithAuthentication)
+        if (response.code == HTTP_UNAUTHORIZED) {
+            onUnauthorized()
+        }
 
-        return chain.proceed(authenticatedRequest)
+        return response
     }
 
     private companion object {
         const val AUTHORIZATION_HEADER = "Authorization"
+        const val HTTP_UNAUTHORIZED = 401
     }
 }

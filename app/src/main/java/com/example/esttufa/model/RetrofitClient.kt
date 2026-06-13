@@ -1,5 +1,6 @@
 package com.example.esttufa.model
 
+import com.example.esttufa.auth.UnauthorizedSessionHandler
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -14,7 +15,9 @@ object RetrofitClient {
     }
 
     private val client = OkHttpClient.Builder()
-        .addInterceptor(AuthInterceptor())
+        .addInterceptor(
+            AuthInterceptor(onUnauthorized = UnauthorizedSessionHandler::handle)
+        )
         .addInterceptor(logging)
         .build()
 

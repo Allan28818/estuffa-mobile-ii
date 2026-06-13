@@ -40,6 +40,8 @@ Important files:
 
 - `MainActivity.kt`: entrada do app, login e auto-login.
 - `CadastroActivity.kt`: criação de conta e perfil.
+- `auth/UnauthorizedSessionHandler.kt`: encerra a sessão e limpa a pilha de
+  Activities após uma resposta HTTP `401`.
 
 Public interfaces:
 
@@ -204,8 +206,8 @@ Important files:
 - `app/build.gradle.kts`: dependências Android, Retrofit e Firebase Auth.
 - `RetrofitClient.kt`: configura Retrofit/OkHttp com autenticação antes do
   logging para compartilhar o header entre todos os endpoints.
-- `AuthInterceptor.kt`: obtém o ID token sem bloquear requisições públicas
-  quando a sessão ou o token estão indisponíveis.
+- `AuthInterceptor.kt`: obtém o ID token sem bloquear requisições públicas e
+  aciona o encerramento global da sessão em respostas `401`.
 - `ApiService.kt`: contrato REST.
 - `StoveRequest.kt`: bodies de criação e edição.
 - `StoveResponse.kt`: representação remota de uma estufa.

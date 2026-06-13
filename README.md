@@ -87,8 +87,8 @@ Validation:
 
 #### Story 1.4: Encerrar sessão em resposta 401
 
-Status: Planned
-Started at: Pending
+Status: Done
+Started at: 2026-06-13 19:10
 
 Acceptance criteria:
 
@@ -97,14 +97,14 @@ Acceptance criteria:
 
 Validation:
 
-- Pending
+- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-13.
 
 ### Epic 2: Contrato de estufas
 
 #### Story 2.1: Mapear requests e responses de estufas
 
-Status: Planned
-Started at: Pending
+Status: Processing
+Started at: 2026-06-13 19:10
 
 Acceptance criteria:
 
@@ -117,8 +117,8 @@ Validation:
 
 #### Story 2.2: Expor endpoints CRUD no Retrofit
 
-Status: Planned
-Started at: Pending
+Status: Processing
+Started at: 2026-06-13 19:10
 
 Acceptance criteria:
 
