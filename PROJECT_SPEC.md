@@ -39,7 +39,7 @@ Responsibility:
 Important files:
 
 - `MainActivity.kt`: valida credenciais, observa o login e executa auto-login.
-- `CadastroActivity.kt`: criação de conta e perfil.
+- `CadastroActivity.kt`: valida o formulário e observa a criação da conta.
 - `auth/UnauthorizedSessionHandler.kt`: encerra a sessão e limpa a pilha de
   Activities após uma resposta HTTP `401`.
 
@@ -126,7 +126,8 @@ Important files:
 - `CadastroEstufaViewModel.kt`: criação, mapeamento PT -> EN e mensagem
   específica para rejeições HTTP `422`.
 - `LoginViewModel.kt`: login Firebase e tradução de falhas comuns.
-- `CadastroViewModel.kt`: registro e atualização de perfil.
+- `CadastroViewModel.kt`: cria a conta e só conclui após atualizar o
+  `displayName`.
 - `CulturaInfoViewModel.kt`: consulta de irrigação.
 
 Public interfaces:

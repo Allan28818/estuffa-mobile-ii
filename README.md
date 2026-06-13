@@ -161,8 +161,8 @@ Validation:
 
 #### Story 3.2: Criar conta e perfil
 
-Status: Planned
-Started at: Pending
+Status: Done
+Started at: 2026-06-13 19:23
 
 Acceptance criteria:
 
@@ -172,7 +172,7 @@ Acceptance criteria:
 
 Validation:
 
-- Pending
+- `gradlew.bat assembleDebug --console=plain --stacktrace`: BUILD SUCCESSFUL.
 
 ### Epic 4: Gestão de estufas
 
