@@ -248,6 +248,11 @@ Refactoring notes:
 - Risks: logging BODY expõe token em builds não debug.
 - Safe next steps: condicionar logging a `BuildConfig.DEBUG`.
 
+Legacy removed:
+
+- O DTO `Cultura`, seu envelope, a rota `/stoves/list` e o carregamento remoto
+  por Glide não fazem mais parte do app.
+
 ## Cross-Module Relationships
 
 - `presentation` -> `viewmodel`: ações e observação de estado.

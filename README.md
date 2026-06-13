@@ -224,8 +224,8 @@ Validation:
 
 #### Story 4.4: Remover contrato legado
 
-Status: Planned
-Started at: Pending
+Status: Done
+Started at: 2026-06-13 19:51
 
 Acceptance criteria:
 
@@ -234,7 +234,8 @@ Acceptance criteria:
 
 Validation:
 
-- Pending
+- Busca sem referências a `stoves/list`, DTO `Cultura` ou Glide.
+- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL.
 
 ### Epic 5: Verificação
 

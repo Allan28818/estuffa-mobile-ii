@@ -16,9 +16,6 @@ interface ApiService {
         @Query("version") version: String
     ): IrrigationResponse
 
-    @GET("stoves/list")
-    suspend fun getCulturas(): CulturaResponse
-
     @POST("stoves")
     suspend fun createStove(@Body body: CreateStoveRequest): StoveResponse
 
