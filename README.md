@@ -364,12 +364,17 @@ Validation:
 
 #### Story 7.3: Publicar estado do perfil
 
-Status: Planned
+Status: Done
+Started at: 2026-06-14 16:03
 
 Acceptance criteria:
 
 - Loading, sucesso e erro são explícitos.
 - Logout e itens de configuração são expostos pelo ViewModel.
+
+Validation:
+
+- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-14.
 
 #### Story 7.4: Publicar estado e eventos dos planos
 
