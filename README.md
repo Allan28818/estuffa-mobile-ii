@@ -457,11 +457,16 @@ Validation:
 
 #### Story 7.10: Implementar o fluxo de perfil
 
-Status: Planned
+Status: Done
+Started at: 2026-06-14 16:22
 
 Acceptance criteria:
 
 - Perfil renderiza dados e estados, abre planos e confirma logout.
+
+Validation:
+
+- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-14.
 
 #### Story 7.11: Implementar o fluxo de planos
 

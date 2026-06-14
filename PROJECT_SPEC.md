@@ -54,6 +54,31 @@ Validation:
 
 - Merge de recursos e build Android.
 
+### Module: `presentation/profile-plans`
+
+Responsibility:
+
+- Exibir identidade, assinatura, configurações e catálogo de planos.
+- Navegar entre Home, Perfil e Planos sem conhecer contratos HTTP.
+
+Important files:
+
+- `ProfileActivity.kt`: renderiza estado, avatar, configurações e logout.
+- `SettingsAdapter.kt`: vincula os atalhos da seção de configurações.
+- `PlanAdapter.kt`: aplica regras visuais e ações dos cards de plano.
+
+Dependencies:
+
+- ViewModels, View Binding, Firebase Auth indireto e recursos Android.
+
+Data flow:
+
+- ViewModel publica perfil/catálogo; Activities renderizam e encaminham ações.
+
+Validation:
+
+- Build, lint e smoke do fluxo de navegação.
+
 ### Module: `presentation/auth`
 
 Responsibility:
