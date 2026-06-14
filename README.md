@@ -470,11 +470,16 @@ Validation:
 
 #### Story 7.11: Implementar o fluxo de planos
 
-Status: Planned
+Status: Done
+Started at: 2026-06-14 16:26
 
 Acceptance criteria:
 
 - Planos renderiza o catálogo e confirma assinatura pelo bottom sheet.
+
+Validation:
+
+- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-14.
 
 #### Story 7.12: Conectar a Home ao perfil
 

@@ -89,6 +89,7 @@
     <string name="subscription_confirm_btn">Confirmar assinatura</string>
     <string name="subscription_cancel_btn">Cancelar</string>
     <string name="subscription_success_message">Assinatura do %s realizada com sucesso!</string>
+    <string name="subscription_benefit_check">✓ %s</string>
 
     <string name="error_loading_profile">Erro ao carregar perfil. Tente novamente.</string>
     <string name="error_loading_plans">Erro ao carregar planos. Tente novamente.</string>

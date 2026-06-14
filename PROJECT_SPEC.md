@@ -64,6 +64,8 @@ Responsibility:
 Important files:
 
 - `ProfileActivity.kt`: renderiza estado, avatar, configurações e logout.
+- `PlansActivity.kt`: renderiza catálogo/estados e coordena assinatura.
+- `ConfirmSubscriptionBottomSheet.kt`: resume e confirma o plano selecionado.
 - `SettingsAdapter.kt`: vincula os atalhos da seção de configurações.
 - `PlanAdapter.kt`: aplica regras visuais e ações dos cards de plano.
 
