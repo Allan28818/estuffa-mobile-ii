@@ -350,12 +350,17 @@ Validation:
 
 #### Story 7.2: Fornecer perfil e catálogo local
 
-Status: Planned
+Status: Done
+Started at: 2026-06-14 15:58
 
 Acceptance criteria:
 
 - Perfil é montado a partir do Firebase Auth e mocks definidos na spec.
 - O catálogo contém os cinco planos e o plano atual local.
+
+Validation:
+
+- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-14.
 
 #### Story 7.3: Publicar estado do perfil
 

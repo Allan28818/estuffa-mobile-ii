@@ -180,10 +180,12 @@ Important files:
 - `IrrigationRepository.kt`: consulta de irrigação.
 - `PlantClassificationRepository.kt`: envia multipart ao classificador e
   preserva falhas em `Result`.
+- `UserRepository.kt`: monta o perfil a partir do Firebase Auth e mocks locais.
+- `PlanRepository.kt`: fornece o catálogo e mantém o plano atual no processo.
 
 Public interfaces:
 
-- Operações suspensas de estufas, irrigação e classificação de imagens.
+- Operações de estufas, irrigação, classificação, perfil e catálogo de planos.
 
 Dependencies:
 
