@@ -22,6 +22,7 @@ irrigação associados às culturas do usuário.
 | --- | --- | --- | --- |
 | `presentation/auth` | Login, cadastro e navegação de sessão. | `MainActivity.kt`, `CadastroActivity.kt` | Deve manter detalhes Firebase fora da renderização. |
 | `presentation/stoves` | Listagem, criação e detalhes de estufas. | `HomeActivity.kt`, `CadastroEstufaActivity.kt`, `CulturaInfoActivity.kt` | Nomes legados de UI permanecem por compatibilidade. |
+| `presentation/profile-plans` | Perfil, configurações e catálogo de assinatura. | `SettingsAdapter.kt`, layouts de perfil/planos | Fluxo local nesta iteração. |
 | `viewmodel` | Estado e orquestração assíncrona das telas. | `viewmodel/*.kt` | Usa LiveData e `viewModelScope`. |
 | `repository` | Fronteira das operações remotas. | `repository/*.kt` | Retorna `Result<T>`. |
 | `network/model` | Retrofit, autenticação HTTP e DTOs. | `model/*.kt` | Não deve conter estado de tela. |
