@@ -405,11 +405,16 @@ Validation:
 
 #### Story 7.6: Estruturar a tela de perfil
 
-Status: Planned
+Status: Done
+Started at: 2026-06-14 16:07
 
 Acceptance criteria:
 
 - Layout contempla cabeçalho, informações, assinatura, configurações e estados.
+
+Validation:
+
+- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-14.
 
 #### Story 7.7: Estruturar planos e confirmação
 

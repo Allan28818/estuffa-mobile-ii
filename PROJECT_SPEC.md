@@ -43,6 +43,8 @@ Important files:
 - `res/values/colors.xml`: cores de badge, erro, divisão e estado desabilitado.
 - `res/drawable/ic_*.xml`: ícones de configuração e edição.
 - `res/drawable/bg_*.xml`: avatar, badge e destaque de plano recomendado.
+- `res/layout/activity_profile.xml`: conteúdo e estados da tela de perfil.
+- `res/layout/item_setting.xml`: linha acessível de configuração.
 
 Validation:
 
