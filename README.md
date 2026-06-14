@@ -312,7 +312,8 @@ Validation:
 
 #### Story 6.4: Validar integração de imagem e warming
 
-Status: Planned
+Status: Done
+Started at: 2026-06-14 15:28
 
 Acceptance criteria:
 
@@ -320,6 +321,15 @@ Acceptance criteria:
 - Os fluxos de irrigação existentes continuam compilando e sem regressão
   estrutural.
 - As limitações de smoke test externo ficam documentadas.
+
+Validation:
+
+- `gradlew.bat testDebugUnitTest --console=plain`: BUILD SUCCESSFUL.
+- `gradlew.bat lintDebug --console=plain`: BUILD SUCCESSFUL.
+- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL.
+- O sandbox não alcançou `https://api-esttufa.onrender.com/hearth-beat`.
+- O Android SDK local não possui `platform-tools/adb`; smoke em dispositivo
+  não foi executado neste ambiente.
 
 ## Decision Log
 

@@ -288,3 +288,5 @@ Legacy removed:
 
 - O smoke test completo depende da disponibilidade da API e de uma conta
   Firebase válida no ambiente de execução.
+- A classificação por câmera/galeria ainda requer smoke em dispositivo porque
+  o ambiente atual não possui `adb` e não alcançou a API externa.
