@@ -45,6 +45,9 @@ Important files:
 - `res/drawable/bg_*.xml`: avatar, badge e destaque de plano recomendado.
 - `res/layout/activity_profile.xml`: conteúdo e estados da tela de perfil.
 - `res/layout/item_setting.xml`: linha acessível de configuração.
+- `res/layout/activity_plans.xml`: lista e estados da tela de planos.
+- `res/layout/item_plan_card.xml`: card de plano expansível.
+- `res/layout/bottom_sheet_confirm_subscription.xml`: resumo da assinatura.
 
 Validation:
 

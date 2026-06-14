@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardPlan"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    app:cardBackgroundColor="?attr/colorSurface"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/tvPopularBadge"
+            style="@style/TextStyle.Subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_badge_plan"
+            android:text="@string/plans_badge_popular"
+            android:textAllCaps="true"
+            android:textColor="@color/tertiary"
+            android:textSize="12sp"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tvPlanName"
+            style="@style/TextStyle.Title.2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="?attr/colorOnSurface"
+            tools:text="🌿 Plano Muda" />
+
+        <TextView
+            android:id="@+id/tvPlanPrice"
+            style="@style/TextStyle.Subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/secondary"
+            android:textSize="16sp"
+            tools:text="R$ 399,90–599,90/mês" />
+
+        <LinearLayout
+            android:id="@+id/llBenefits"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical" />
+
+        <TextView
+            android:id="@+id/tvSeeMore"
+            style="@style/TextStyle.Subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:gravity="center_vertical"
+            android:text="@string/plans_see_more"
+            android:textColor="@color/primary"
+            android:textSize="14sp"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPlanAction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:minHeight="48dp"
+            android:text="@string/plans_btn_subscribe"
+            app:backgroundTint="@color/tertiary" />
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
