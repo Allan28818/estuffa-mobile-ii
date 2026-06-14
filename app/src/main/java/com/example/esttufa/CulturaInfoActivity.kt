@@ -18,9 +18,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.esttufa.databinding.ActivityCulturaInfoBinding
+import com.example.esttufa.viewmodel.ClassificationUiState
 import com.example.esttufa.viewmodel.CulturaInfoUiState
 import com.example.esttufa.viewmodel.CulturaInfoViewModel
-import java.util.*
+import java.io.ByteArrayOutputStream
+import java.util.Locale
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class CulturaInfoActivity : AppCompatActivity(), SensorEventListener {
 
@@ -37,6 +42,8 @@ class CulturaInfoActivity : AppCompatActivity(), SensorEventListener {
     private var isWatering = false
     private var timeLeftInMillis: Long = 0L
     private var isFinished = false
+    private var isIrrigationLoading = false
+    private var isClassificationLoading = false
 
     // Timer
     private val timerHandler = Handler(Looper.getMainLooper())
@@ -144,21 +151,42 @@ class CulturaInfoActivity : AppCompatActivity(), SensorEventListener {
     }
 
     private fun processImageResult(bitmap: Bitmap?, uri: Uri?) {
-        val isRecognized = Random().nextInt(10) < 7
         binding.tvInstrucaoFoto.visibility = View.GONE
 
-        if (isRecognized) {
-            binding.cvFotoReconhecida.visibility = View.VISIBLE
-            binding.cvFotoNaoReconhecida.visibility = View.GONE
-            if (bitmap != null) binding.ivFotoResult.setImageBitmap(bitmap)
-            else if (uri != null) binding.ivFotoResult.setImageURI(uri)
-
-            val culturaTitle = binding.tvCulturaInfoTitle.text.toString()
-            binding.tvNomeCulturaResult.text = culturaTitle.replace("Estufa de ", "")
-        } else {
-            binding.cvFotoReconhecida.visibility = View.GONE
-            binding.cvFotoNaoReconhecida.visibility = View.VISIBLE
+        when {
+            bitmap != null -> binding.ivFotoResult.setImageBitmap(bitmap)
+            uri != null -> binding.ivFotoResult.setImageURI(uri)
+            else -> {
+                showClassificationError()
+                return
+            }
         }
+
+        val imageBytes = runCatching {
+            when {
+                bitmap != null -> ByteArrayOutputStream().use { output ->
+                    check(bitmap.compress(Bitmap.CompressFormat.JPEG, 90, output)) {
+                        "Falha ao comprimir a imagem"
+                    }
+                    output.toByteArray()
+                }
+                uri != null -> contentResolver.openInputStream(uri)?.use { input ->
+                    input.readBytes()
+                } ?: error("Nao foi possivel abrir a imagem")
+                else -> error("Imagem nao informada")
+            }
+        }.getOrElse {
+            showClassificationError()
+            return
+        }
+
+        val requestBody = imageBytes.toRequestBody("image/*".toMediaType())
+        val imagePart = MultipartBody.Part.createFormData(
+            "image",
+            "photo.jpg",
+            requestBody
+        )
+        viewModel.classifyImage(imagePart)
     }
 
     private fun openIrrigationPopup() {
@@ -222,9 +250,13 @@ class CulturaInfoActivity : AppCompatActivity(), SensorEventListener {
     private fun observeViewModel() {
         viewModel.uiState.observe(this) { state ->
             when (state) {
-                is CulturaInfoUiState.Loading -> binding.progressBar.visibility = View.VISIBLE
+                is CulturaInfoUiState.Loading -> {
+                    isIrrigationLoading = true
+                    updateProgressVisibility()
+                }
                 is CulturaInfoUiState.Success -> {
-                    binding.progressBar.visibility = View.GONE
+                    isIrrigationLoading = false
+                    updateProgressVisibility()
                     val data = state.data
                     binding.tvTemperatura.text  = "${"%.0f".format(data.temperature)}°C"
                     binding.tvUmidade.text      = "${"%.0f".format(data.moisture)}%"
@@ -234,11 +266,52 @@ class CulturaInfoActivity : AppCompatActivity(), SensorEventListener {
                     timeLeftInMillis = (data.irrigation_time * 1000).toLong()
                 }
                 is CulturaInfoUiState.Error -> {
-                    binding.progressBar.visibility = View.GONE
+                    isIrrigationLoading = false
+                    updateProgressVisibility()
                     Toast.makeText(this, state.message, Toast.LENGTH_SHORT).show()
                 }
             }
         }
+
+        viewModel.classificationState.observe(this) { state ->
+            when (state) {
+                ClassificationUiState.Idle -> Unit
+                ClassificationUiState.Loading -> {
+                    isClassificationLoading = true
+                    binding.cvFotoReconhecida.visibility = View.GONE
+                    binding.cvFotoNaoReconhecida.visibility = View.GONE
+                    updateProgressVisibility()
+                }
+                is ClassificationUiState.Success -> {
+                    isClassificationLoading = false
+                    binding.tvNomeCulturaResult.text = state.className
+                    binding.cvFotoReconhecida.visibility = View.VISIBLE
+                    binding.cvFotoNaoReconhecida.visibility = View.GONE
+                    updateProgressVisibility()
+                }
+                is ClassificationUiState.Error -> {
+                    isClassificationLoading = false
+                    showClassificationError()
+                    updateProgressVisibility()
+                }
+            }
+        }
+    }
+
+    private fun showClassificationError() {
+        binding.cvFotoReconhecida.visibility = View.GONE
+        binding.cvFotoNaoReconhecida.visibility = View.VISIBLE
+    }
+
+    private fun updateProgressVisibility() {
+        binding.progressBar.visibility = if (
+            isIrrigationLoading || isClassificationLoading
+        ) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+        binding.fabCamera.isEnabled = !isClassificationLoading
     }
 
     override fun onSensorChanged(event: SensorEvent) {

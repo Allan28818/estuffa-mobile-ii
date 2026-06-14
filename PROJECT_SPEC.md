@@ -1,6 +1,6 @@
 # Project Spec Map
 
-Last updated: 2026-06-13
+Last updated: 2026-06-14
 
 ## Purpose
 
@@ -25,6 +25,7 @@ irrigação associados às culturas do usuário.
 | `viewmodel` | Estado e orquestração assíncrona das telas. | `viewmodel/*.kt` | Usa LiveData e `viewModelScope`. |
 | `repository` | Fronteira das operações remotas. | `repository/*.kt` | Retorna `Result<T>`. |
 | `network/model` | Retrofit, autenticação HTTP e DTOs. | `model/*.kt` | Não deve conter estado de tela. |
+| `warming` | Pré-aquecimento idempotente da API. | `warming/ApiWarmingHelper.kt` | Falhas são silenciosas e não bloqueiam a UI. |
 | `resources` | Layouts, strings e imagens locais. | `res/layout`, `res/drawable`, `res/values` | View Binding habilitado. |
 
 ## Module Specs
@@ -86,7 +87,8 @@ Important files:
   `RESULT_OK` para recarregar a Home.
 - `CulturaAdapter.kt`: renderiza nome da estufa e drawable local por cultura,
   sem URL remota.
-- `CulturaInfoActivity.kt`: sensores, câmera e consulta de irrigação.
+- `CulturaInfoActivity.kt`: sensores, câmera, classificação de imagem e
+  consulta de irrigação.
 - `AndroidManifest.xml`: permissões do app; câmera declarada como hardware
   opcional para compatibilidade com dispositivos sem o recurso.
 
@@ -103,7 +105,7 @@ Dependencies:
 Data flow:
 
 - Inputs: ações do usuário e estados dos ViewModels.
-- Processing: renderização e navegação.
+- Processing: renderização, navegação e conversão de imagens para multipart.
 - Outputs: lista, empty state, feedback e intents.
 
 Validation:
@@ -133,7 +135,8 @@ Important files:
 - `LoginViewModel.kt`: login Firebase e tradução de falhas comuns.
 - `CadastroViewModel.kt`: cria a conta e só conclui após atualizar o
   `displayName`.
-- `CulturaInfoViewModel.kt`: consulta de irrigação.
+- `CulturaInfoViewModel.kt`: consulta de irrigação e estado independente de
+  classificação de plantas.
 
 Public interfaces:
 
@@ -174,10 +177,12 @@ Important files:
 - `StoveRepository.kt`: CRUD completo com `ApiService` injetável e resultados
   explícitos para a camada de aplicação.
 - `IrrigationRepository.kt`: consulta de irrigação.
+- `PlantClassificationRepository.kt`: envia multipart ao classificador e
+  preserva falhas em `Result`.
 
 Public interfaces:
 
-- Operações suspensas de estufas e irrigação.
+- Operações suspensas de estufas, irrigação e classificação de imagens.
 
 Dependencies:
 
@@ -216,7 +221,10 @@ Important files:
   logging para compartilhar o header entre todos os endpoints.
 - `AuthInterceptor.kt`: força a atualização do ID token, preserva requisições
   públicas sem sessão e aciona o encerramento global em respostas `401`.
-- `ApiService.kt`: contrato REST de irrigação e CRUD completo de estufas.
+- `ApiService.kt`: contrato REST de irrigação, estufas, classificação
+  multipart e healthcheck.
+- `PlantClassificationResponse.kt`: resposta resiliente com nomes de classe e
+  confiança opcionais.
 - `StoveRequest.kt`: bodies de criação e edição.
 - `StoveResponse.kt`: mapeia identidade, nome, cultura, proprietário e
   timestamps retornados pela API.
@@ -261,6 +269,8 @@ Legacy removed:
 - `viewmodel` -> `repository`: execução de operações remotas.
 - `repository` -> `network/model`: contrato Retrofit e DTOs.
 - `network/model` -> Firebase: aquisição de token e encerramento de sessão.
+- `presentation/auth` e `presentation/stoves` -> `warming`: disparam o
+  healthcheck idempotente no startup.
 
 ## Refactoring Map
 

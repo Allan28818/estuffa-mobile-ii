@@ -295,7 +295,8 @@ Validation:
 
 #### Story 6.3: Classificar imagens pela API real
 
-Status: Planned
+Status: Done
+Started at: 2026-06-14 15:28
 
 Acceptance criteria:
 
@@ -303,6 +304,11 @@ Acceptance criteria:
 - Loading impede um segundo envio e preserva feedback visual.
 - Sucesso mostra imagem e classe; falha mostra o card de erro.
 - A simulação baseada em `Random` deixa de existir.
+
+Validation:
+
+- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-14.
+- Busca estrutural confirmou ausência de `Random` no fluxo de classificação.
 
 #### Story 6.4: Validar integração de imagem e warming
 
