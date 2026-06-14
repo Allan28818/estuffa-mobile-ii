@@ -524,3 +524,92 @@ Validation:
   warming em um helper de processo idempotente.
 - 2026-06-14: manter perfil e assinatura como domínio local nesta iteração,
   usando Firebase Auth apenas como fonte de identidade.
+
+### Epic 8: Recuperação de senha
+
+#### Story 8.1: Criar tela de recuperação
+
+Status: Done
+Started at: 2026-06-14 16:29
+
+Acceptance criteria:
+
+- Layout possui campo de e-mail e botão de envio.
+- Activity usa View Binding e está registrada no Manifest.
+
+Validation:
+
+- `gradlew.bat testDebugUnitTest lintDebug assembleDebug --console=plain`:
+  BUILD SUCCESSFUL em 2026-06-14.
+
+#### Story 8.2: Enviar redefinição pelo Firebase
+
+Status: Done
+Started at: 2026-06-14 16:29
+
+Acceptance criteria:
+
+- ViewModel publica estados Idle, Loading, Success e Error.
+- E-mail válido é enviado por `sendPasswordResetEmail`.
+- Falhas conhecidas são traduzidas para mensagens legíveis.
+
+Validation:
+
+- `gradlew.bat testDebugUnitTest lintDebug assembleDebug --console=plain`:
+  BUILD SUCCESSFUL em 2026-06-14.
+
+#### Story 8.3: Integrar validação e navegação
+
+Status: Done
+Started at: 2026-06-14 16:29
+
+Acceptance criteria:
+
+- O login abre a tela de recuperação.
+- E-mail vazio ou inválido exibe erro no campo.
+- Loading desabilita o envio; sucesso e erro exibem feedback adequado.
+
+Validation:
+
+- Revisão estrutural confirmou navegação, validação e observação dos estados.
+- `gradlew.bat testDebugUnitTest lintDebug assembleDebug --console=plain`:
+  BUILD SUCCESSFUL em 2026-06-14.
+
+#### Story 8.4: Configurar template de e-mail
+
+Status: External action required
+Started at: 2026-06-14 16:29
+
+Acceptance criteria:
+
+- O assunto solicitado e as limitações do template Firebase são verificados.
+- Qualquer etapa externa ao repositório fica documentada e não é marcada como
+  validada sem confirmação.
+
+Validation:
+
+- A API oficial aceita assunto, corpo e `bodyFormat: HTML`.
+- O placeholder `%LINK%` usado no HTML é suportado.
+- O repositório não contém Functions, Extensions ou credenciais para alterar
+  o projeto remoto `esttufa-ai`.
+- Pendente aplicar o assunto e HTML em Authentication > Templates > Password
+  reset e validar o e-mail recebido.
+
+#### Story 8.5: Validar recuperação de senha
+
+Status: Done
+Started at: 2026-06-14 16:29
+
+Acceptance criteria:
+
+- Testes, lint e assemble passam.
+- Limitações de validação externa ficam documentadas.
+
+Validation:
+
+- `gradlew.bat testDebugUnitTest lintDebug assembleDebug --console=plain`:
+  BUILD SUCCESSFUL em 2026-06-14.
+- O comando `adb devices` não respondeu; smoke em dispositivo não foi
+  executado.
+- O envio real e o template dependem do Firebase remoto e permanecem
+  pendentes de validação manual.

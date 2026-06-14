@@ -20,7 +20,7 @@ irrigação associados às culturas do usuário.
 
 | Module | Responsibility | Key files | Notes |
 | --- | --- | --- | --- |
-| `presentation/auth` | Login, cadastro e navegação de sessão. | `MainActivity.kt`, `CadastroActivity.kt` | Deve manter detalhes Firebase fora da renderização. |
+| `presentation/auth` | Login, cadastro, recuperação de senha e navegação. | `MainActivity.kt`, `CadastroActivity.kt`, `EsqueciSenhaActivity.kt` | Deve manter detalhes Firebase fora da renderização. |
 | `presentation/stoves` | Listagem, criação e detalhes de estufas. | `HomeActivity.kt`, `CadastroEstufaActivity.kt`, `CulturaInfoActivity.kt` | Nomes legados de UI permanecem por compatibilidade. |
 | `presentation/profile-plans` | Perfil, configurações e catálogo de assinatura. | `SettingsAdapter.kt`, layouts de perfil/planos | Fluxo local nesta iteração. |
 | `viewmodel` | Estado e orquestração assíncrona das telas. | `viewmodel/*.kt` | Usa LiveData e `viewModelScope`. |
@@ -95,12 +95,14 @@ Important files:
 
 - `MainActivity.kt`: valida credenciais, observa o login e executa auto-login.
 - `CadastroActivity.kt`: valida o formulário e observa a criação da conta.
+- `EsqueciSenhaActivity.kt`: valida o e-mail, observa o envio da redefinição e
+  retorna ao login após sucesso.
 - `auth/UnauthorizedSessionHandler.kt`: encerra a sessão e limpa a pilha de
   Activities após uma resposta HTTP `401`.
 
 Public interfaces:
 
-- Intents para `CadastroActivity` e `HomeActivity`.
+- Intents para `CadastroActivity`, `EsqueciSenhaActivity` e `HomeActivity`.
 - Estados publicados pelos ViewModels de autenticação.
 
 Dependencies:
@@ -112,13 +114,14 @@ Data flow:
 
 - Inputs: email, senha, nome e sobrenome.
 - Processing: validação local e operação Firebase.
-- Outputs: estado de sucesso/erro e navegação.
+- Outputs: estado de sucesso/erro, Toasts e navegação.
 
 Validation:
 
 - Tests: validações e transições de estado quando desacopladas.
 - Manual checks: login, cadastro, erro e auto-login.
-- Known gaps: Firebase real exige credenciais e dispositivo/emulador.
+- Known gaps: envio e template de recuperação exigem Firebase real e
+  dispositivo/emulador.
 
 Refactoring notes:
 
@@ -190,6 +193,8 @@ Important files:
 - `LoginViewModel.kt`: login Firebase e tradução de falhas comuns.
 - `CadastroViewModel.kt`: cria a conta e só conclui após atualizar o
   `displayName`.
+- `EsqueciSenhaViewModel.kt`: solicita redefinição via Firebase Auth e traduz
+  falhas comuns em mensagens legíveis.
 - `CulturaInfoViewModel.kt`: consulta de irrigação e estado independente de
   classificação de plantas.
 - `ProfileViewModel.kt`: carrega identidade/assinatura e expõe configurações.
@@ -379,3 +384,6 @@ Refactoring notes:
   Firebase válida no ambiente de execução.
 - A classificação por câmera/galeria ainda requer smoke em dispositivo porque
   o ambiente atual não possui `adb` e não alcançou a API externa.
+- O template de recuperação deve ser aplicado no Console Firebase do projeto
+  `esttufa-ai`; o repositório não possui infraestrutura ou credenciais para
+  alterar essa configuração remota.
