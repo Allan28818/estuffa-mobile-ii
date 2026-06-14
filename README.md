@@ -261,9 +261,61 @@ Validation:
   criação, recarga, imagem local e detalhes com irrigação.
 - Conta e estufas temporárias removidas após os testes.
 
+### Epic 6: Classificação de imagem e warming da API
+
+#### Story 6.1: Expor contratos de classificação
+
+Status: Done
+Started at: 2026-06-14 15:28
+
+Acceptance criteria:
+
+- A API expõe `POST /plant-classification/predict` como multipart.
+- A imagem usa o campo `image` e o modelo padrão é `decision_tree`.
+- A resposta aceita nomes de classe e confiança opcionais.
+
+Validation:
+
+- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-14.
+
+#### Story 6.2: Pré-aquecer a API no startup
+
+Status: Processing
+Started at: 2026-06-14 15:28
+
+Acceptance criteria:
+
+- Login e Home solicitam o warming sem bloquear a interface.
+- Apenas uma chamada é disparada por sessão do processo.
+- Falhas de rede ou HTTP não geram feedback nem crash.
+
+#### Story 6.3: Classificar imagens pela API real
+
+Status: Planned
+
+Acceptance criteria:
+
+- Fotos da câmera e imagens da galeria são enviadas à API.
+- Loading impede um segundo envio e preserva feedback visual.
+- Sucesso mostra imagem e classe; falha mostra o card de erro.
+- A simulação baseada em `Random` deixa de existir.
+
+#### Story 6.4: Validar integração de imagem e warming
+
+Status: Planned
+
+Acceptance criteria:
+
+- `assembleDebug` conclui sem erros.
+- Os fluxos de irrigação existentes continuam compilando e sem regressão
+  estrutural.
+- As limitações de smoke test externo ficam documentadas.
+
 ## Decision Log
 
 - 2026-06-13: manter MVVM leve e os layouts existentes para limitar o escopo.
 - 2026-06-13: forçar `getIdToken(true)` para cumprir o contrato de token
   atualizado definido pela integração.
 - 2026-06-13: tratar `401` como evento transversal de encerramento de sessão.
+- 2026-06-14: manter a classificação no fluxo MVVM existente e isolar o
+  warming em um helper de processo idempotente.
