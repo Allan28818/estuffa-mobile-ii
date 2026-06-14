@@ -133,7 +133,7 @@ Responsibility:
 Important files:
 
 - `HomeActivity.kt`: observa `StoveResponse`, recarrega após retornos, usa o
-  nome Firebase na saudação e abre detalhes.
+  nome Firebase na saudação, abre detalhes e oferece entrada para o perfil.
 - `CadastroEstufaActivity.kt`: valida o formulário, observa a criação e retorna
   `RESULT_OK` para recarregar a Home.
 - `CulturaAdapter.kt`: renderiza nome da estufa e drawable local por cultura,
@@ -147,6 +147,7 @@ Public interfaces:
 
 - Extras `stove_id`, `crop`, `cultura` e `stove_name` ao abrir detalhes.
 - `RESULT_OK` ao concluir a criação.
+- Intent explícito da Home para `ProfileActivity`.
 
 Dependencies:
 

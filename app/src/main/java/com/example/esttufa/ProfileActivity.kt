@@ -61,9 +61,7 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun setupActions() {
         binding.btnViewPlans.setOnClickListener {
-            startActivity(
-                Intent().setClassName(this, "$packageName.PlansActivity")
-            )
+            startActivity(Intent(this, PlansActivity::class.java))
         }
         binding.btnRetryProfile.setOnClickListener { viewModel.loadProfile() }
 

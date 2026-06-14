@@ -18,6 +18,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Esttufa">
         <activity
+            android:name=".PlansActivity"
+            android:configChanges="orientation|screenSize|screenLayout"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileActivity"
+            android:configChanges="orientation|screenSize|screenLayout"
+            android:exported="false" />
+        <activity
             android:name=".CadastroEstufaActivity"
             android:configChanges="orientation|screenSize|screenLayout"
             android:exported="false" />

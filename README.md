@@ -483,11 +483,16 @@ Validation:
 
 #### Story 7.12: Conectar a Home ao perfil
 
-Status: Planned
+Status: Done
+Started at: 2026-06-14 16:30
 
 Acceptance criteria:
 
 - Avatar/cabeçalho abre o perfil e as Activities estão registradas.
+
+Validation:
+
+- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-14.
 
 #### Story 7.13: Validar perfil e planos
 

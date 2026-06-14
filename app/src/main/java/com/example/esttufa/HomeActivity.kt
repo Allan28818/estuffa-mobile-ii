@@ -56,6 +56,10 @@ class HomeActivity : AppCompatActivity() {
                 Intent(this, CadastroEstufaActivity::class.java)
             )
         }
+
+        binding.llHeader.setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+        }
     }
 
     private fun observeViewModel() {
