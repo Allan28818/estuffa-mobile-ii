@@ -40,6 +40,10 @@ class MainActivity : AppCompatActivity() {
         binding.btnCadastrar.setOnClickListener {
             startActivity(Intent(this, CadastroActivity::class.java))
         }
+
+        binding.tvEsqueciSenha.setOnClickListener {
+            startActivity(Intent(this, EsqueciSenhaActivity::class.java))
+        }
     }
 
     private fun submitLogin() {
