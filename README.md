@@ -378,12 +378,17 @@ Validation:
 
 #### Story 7.4: Publicar estado e eventos dos planos
 
-Status: Planned
+Status: Done
+Started at: 2026-06-14 16:05
 
 Acceptance criteria:
 
 - Lista, plano atual, expansão e eventos de assinatura são observáveis.
 - A confirmação atualiza o plano apenas localmente.
+
+Validation:
+
+- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-14.
 
 #### Story 7.5: Criar recursos visuais compartilhados
 

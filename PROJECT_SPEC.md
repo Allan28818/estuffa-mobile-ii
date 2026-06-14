@@ -156,6 +156,8 @@ Important files:
 - `CulturaInfoViewModel.kt`: consulta de irrigação e estado independente de
   classificação de plantas.
 - `ProfileViewModel.kt`: carrega identidade/assinatura e expõe configurações.
+- `PlansViewModel.kt`: publica catálogo, plano atual, expansão e eventos de
+  confirmação de assinatura.
 
 Public interfaces:
 
