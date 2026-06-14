@@ -1,0 +1,10 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/badge_plan_background" />
+    <corners android:radius="12dp" />
+    <padding
+        android:left="10dp"
+        android:top="4dp"
+        android:right="10dp"
+        android:bottom="4dp" />
+</shape>

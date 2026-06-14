@@ -37,4 +37,60 @@
     <string name="hint_cultura_interna">Cultura Interna</string>
     <string name="info_cultura">Cada estufa suporta apenas uma cultura por vez. A IA adaptará os sensores automaticamente para a planta escolhida.</string>
     <string name="btn_criar_estufa">CRIAR ESTUFA</string>
+
+    <string name="profile_title">Meu Perfil</string>
+    <string name="profile_section_info">Informações pessoais</string>
+    <string name="profile_section_subscription">Minha assinatura</string>
+    <string name="profile_section_settings">Configurações</string>
+    <string name="profile_label_name">Nome</string>
+    <string name="profile_label_email">E-mail</string>
+    <string name="profile_label_phone">Telefone</string>
+    <string name="profile_label_location">Localização</string>
+    <string name="profile_not_informed">Não informado</string>
+    <string name="profile_no_plan">Sem plano ativo</string>
+    <string name="profile_renewal_label">Renovação: %s</string>
+    <string name="profile_view_plans">Ver todos os planos</string>
+    <string name="profile_edit_description">Editar campo</string>
+    <string name="profile_avatar_description">Foto do perfil</string>
+    <string name="profile_plan_badge_description">Plano atual: %s</string>
+    <string name="profile_initials_description">Iniciais do nome: %s</string>
+
+    <string name="settings_notifications">Notificações</string>
+    <string name="settings_language">Idioma</string>
+    <string name="settings_support">Suporte</string>
+    <string name="settings_terms">Termos de uso</string>
+    <string name="settings_logout">Sair</string>
+    <string name="settings_chevron_description">Abrir %s</string>
+    <string name="settings_coming_soon">Em breve</string>
+
+    <string name="logout_dialog_title">Sair do Esttufa</string>
+    <string name="logout_dialog_message">Tem certeza que deseja sair da sua conta?</string>
+    <string name="logout_dialog_confirm">Sair</string>
+    <string name="logout_dialog_cancel">Cancelar</string>
+
+    <string name="plans_title">Planos Esttufa</string>
+    <string name="plans_subtitle">Escolha o plano ideal para sua produção 🌱</string>
+    <string name="plans_badge_popular">Mais popular</string>
+    <string name="plans_btn_subscribe">Assinar</string>
+    <string name="plans_btn_current">Plano atual</string>
+    <string name="plans_see_more">ver mais</string>
+    <string name="plans_see_less">ver menos</string>
+    <string name="plans_empty">Nenhum plano disponível</string>
+    <string name="plans_error_retry">Tentar novamente</string>
+    <string name="plans_recommended_description">Plano recomendado: %s</string>
+    <string name="plans_subscribe_description">Assinar %s</string>
+    <string name="plans_current_description">Plano atual — já assinado</string>
+    <string name="plans_expand_description">Ver mais benefícios do %s</string>
+    <string name="plans_collapse_description">Ver menos benefícios do %s</string>
+
+    <string name="subscription_confirm_title">Confirmar Assinatura</string>
+    <string name="subscription_confirm_btn">Confirmar assinatura</string>
+    <string name="subscription_cancel_btn">Cancelar</string>
+    <string name="subscription_success_message">Assinatura do %s realizada com sucesso!</string>
+
+    <string name="error_loading_profile">Erro ao carregar perfil. Tente novamente.</string>
+    <string name="error_loading_plans">Erro ao carregar planos. Tente novamente.</string>
+    <string name="btn_retry">Tentar novamente</string>
+    <string name="error_state_description">Erro ao carregar dados</string>
+    <string name="open_profile_description">Abrir perfil</string>
 </resources>

@@ -382,11 +382,16 @@ Acceptance criteria:
 
 #### Story 7.5: Criar recursos visuais compartilhados
 
-Status: Planned
+Status: Done
+Started at: 2026-06-14 16:00
 
 Acceptance criteria:
 
 - Ícones, fundos, cores e textos exigidos pelas telas estão disponíveis.
+
+Validation:
+
+- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-14.
 
 #### Story 7.6: Estruturar a tela de perfil
 

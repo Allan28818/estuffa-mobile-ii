@@ -31,6 +31,23 @@ irrigação associados às culturas do usuário.
 
 ## Module Specs
 
+### Module: `resources`
+
+Responsibility:
+
+- Definir textos, cores, vetores e fundos reutilizados pelo perfil e planos.
+
+Important files:
+
+- `res/values/strings.xml`: textos visíveis e descrições de acessibilidade.
+- `res/values/colors.xml`: cores de badge, erro, divisão e estado desabilitado.
+- `res/drawable/ic_*.xml`: ícones de configuração e edição.
+- `res/drawable/bg_*.xml`: avatar, badge e destaque de plano recomendado.
+
+Validation:
+
+- Merge de recursos e build Android.
+
 ### Module: `presentation/auth`
 
 Responsibility:
