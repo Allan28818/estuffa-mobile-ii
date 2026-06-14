@@ -25,6 +25,7 @@ irrigação associados às culturas do usuário.
 | `viewmodel` | Estado e orquestração assíncrona das telas. | `viewmodel/*.kt` | Usa LiveData e `viewModelScope`. |
 | `repository` | Fronteira das operações remotas. | `repository/*.kt` | Retorna `Result<T>`. |
 | `network/model` | Retrofit, autenticação HTTP e DTOs. | `model/*.kt` | Não deve conter estado de tela. |
+| `profile/plans model` | Contratos locais de perfil, catálogo e configurações. | `UserProfile.kt`, `Plan.kt`, `SettingsItem.kt` | Não depende de Android UI. |
 | `warming` | Pré-aquecimento idempotente da API. | `warming/ApiWarmingHelper.kt` | Falhas são silenciosas e não bloqueiam a UI. |
 | `resources` | Layouts, strings e imagens locais. | `res/layout`, `res/drawable`, `res/values` | View Binding habilitado. |
 
@@ -262,6 +263,35 @@ Legacy removed:
 
 - O DTO `Cultura`, seu envelope, a rota `/stoves/list` e o carregamento remoto
   por Glide não fazem mais parte do app.
+
+### Module: `profile/plans model`
+
+Responsibility:
+
+- Representar identidade exibida, assinatura local, catálogo de planos e itens
+  de configuração sem acoplamento com Activities ou Firebase.
+
+Important files:
+
+- `UserProfile.kt`: dados do usuário e assinatura exibidos no perfil.
+- `Plan.kt`: preço, benefícios, recomendação e apresentação de cada plano.
+- `SettingsItem.kt`: metadados dos atalhos de configuração.
+
+Public interfaces:
+
+- Data classes imutáveis consumidas por repositories, ViewModels e adapters.
+
+Dependencies:
+
+- Nenhuma dependência de framework.
+
+Validation:
+
+- Compilação Kotlin no build Android.
+
+Refactoring notes:
+
+- O plano atual permanece local até existir contrato de assinatura na API.
 
 ## Cross-Module Relationships
 

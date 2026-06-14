@@ -331,6 +331,123 @@ Validation:
 - O Android SDK local não possui `platform-tools/adb`; smoke em dispositivo
   não foi executado neste ambiente.
 
+### Epic 7: Perfil e planos do serviço
+
+#### Story 7.1: Modelar perfil, plano e configuração
+
+Status: Done
+Started at: 2026-06-14 15:53
+
+Acceptance criteria:
+
+- Perfil representa dados Firebase e assinatura local.
+- Plano representa preço, benefícios, recomendação e apresentação.
+- Item de configuração representa ícone, rótulo e ação destrutiva.
+
+Validation:
+
+- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-14.
+
+#### Story 7.2: Fornecer perfil e catálogo local
+
+Status: Planned
+
+Acceptance criteria:
+
+- Perfil é montado a partir do Firebase Auth e mocks definidos na spec.
+- O catálogo contém os cinco planos e o plano atual local.
+
+#### Story 7.3: Publicar estado do perfil
+
+Status: Planned
+
+Acceptance criteria:
+
+- Loading, sucesso e erro são explícitos.
+- Logout e itens de configuração são expostos pelo ViewModel.
+
+#### Story 7.4: Publicar estado e eventos dos planos
+
+Status: Planned
+
+Acceptance criteria:
+
+- Lista, plano atual, expansão e eventos de assinatura são observáveis.
+- A confirmação atualiza o plano apenas localmente.
+
+#### Story 7.5: Criar recursos visuais compartilhados
+
+Status: Planned
+
+Acceptance criteria:
+
+- Ícones, fundos, cores e textos exigidos pelas telas estão disponíveis.
+
+#### Story 7.6: Estruturar a tela de perfil
+
+Status: Planned
+
+Acceptance criteria:
+
+- Layout contempla cabeçalho, informações, assinatura, configurações e estados.
+
+#### Story 7.7: Estruturar planos e confirmação
+
+Status: Planned
+
+Acceptance criteria:
+
+- Layout contempla lista, cards, estados e bottom sheet.
+
+#### Story 7.8: Renderizar configurações
+
+Status: Planned
+
+Acceptance criteria:
+
+- Adapter vincula ícones, rótulos, chevrons e ação destrutiva.
+
+#### Story 7.9: Renderizar cards de planos
+
+Status: Planned
+
+Acceptance criteria:
+
+- Adapter renderiza plano atual, recomendação, expansão e assinatura.
+
+#### Story 7.10: Implementar o fluxo de perfil
+
+Status: Planned
+
+Acceptance criteria:
+
+- Perfil renderiza dados e estados, abre planos e confirma logout.
+
+#### Story 7.11: Implementar o fluxo de planos
+
+Status: Planned
+
+Acceptance criteria:
+
+- Planos renderiza o catálogo e confirma assinatura pelo bottom sheet.
+
+#### Story 7.12: Conectar a Home ao perfil
+
+Status: Planned
+
+Acceptance criteria:
+
+- Avatar/cabeçalho abre o perfil e as Activities estão registradas.
+
+#### Story 7.13: Validar perfil e planos
+
+Status: Planned
+
+Acceptance criteria:
+
+- Build e lint passam sem erros críticos.
+- Fluxo Home -> Perfil -> Planos e retorno está coerente.
+
 ## Decision Log
 
 - 2026-06-13: manter MVVM leve e os layouts existentes para limitar o escopo.
@@ -339,3 +456,5 @@ Validation:
 - 2026-06-13: tratar `401` como evento transversal de encerramento de sessão.
 - 2026-06-14: manter a classificação no fluxo MVVM existente e isolar o
   warming em um helper de processo idempotente.
+- 2026-06-14: manter perfil e assinatura como domínio local nesta iteração,
+  usando Firebase Auth apenas como fonte de identidade.
