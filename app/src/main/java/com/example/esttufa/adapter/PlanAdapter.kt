@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import com.example.esttufa.R
@@ -22,13 +23,27 @@ class PlanAdapter(
 
     var currentPlanId: String = ""
         set(value) {
+            val previousPosition = plans.indexOfFirst { it.id == field }
             field = value
-            notifyDataSetChanged()
+            val currentPosition = plans.indexOfFirst { it.id == value }
+            if (previousPosition >= 0) notifyItemChanged(previousPosition)
+            if (currentPosition >= 0 && currentPosition != previousPosition) {
+                notifyItemChanged(currentPosition)
+            }
         }
 
     fun submitPlans(items: List<Plan>) {
+        val oldItems = plans
         plans = items
-        notifyDataSetChanged()
+        DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+            override fun getOldListSize(): Int = oldItems.size
+            override fun getNewListSize(): Int = items.size
+            override fun areItemsTheSame(oldPosition: Int, newPosition: Int): Boolean =
+                oldItems[oldPosition].id == items[newPosition].id
+
+            override fun areContentsTheSame(oldPosition: Int, newPosition: Int): Boolean =
+                oldItems[oldPosition] == items[newPosition]
+        }).dispatchUpdatesTo(this)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlanViewHolder {

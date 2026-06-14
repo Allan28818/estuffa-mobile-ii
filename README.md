@@ -496,12 +496,23 @@ Validation:
 
 #### Story 7.13: Validar perfil e planos
 
-Status: Planned
+Status: Done
+Started at: 2026-06-14 16:33
 
 Acceptance criteria:
 
 - Build e lint passam sem erros críticos.
 - Fluxo Home -> Perfil -> Planos e retorno está coerente.
+
+Validation:
+
+- `gradlew.bat testDebugUnitTest lintDebug assembleDebug --console=plain`:
+  BUILD SUCCESSFUL em 2026-06-14.
+- Lint final: 0 erros; warnings restantes não são críticos para esta história.
+- Revisão estrutural confirmou Activities no Manifest, navegação explícita,
+  cinco planos, plano Muda atual/recomendado, expansão, bottom sheet e logout.
+- O comando `adb devices` não respondeu no ambiente; smoke em dispositivo e
+  validação com TalkBack não foram executados.
 
 ## Decision Log
 

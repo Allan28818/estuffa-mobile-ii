@@ -80,6 +80,9 @@ Data flow:
 Validation:
 
 - Build, lint e smoke do fluxo de navegação.
+- Em 2026-06-14, testes unitários, lint e assemble concluíram com sucesso.
+- Smoke em dispositivo permanece pendente porque `adb devices` não respondeu
+  no ambiente de execução.
 
 ### Module: `presentation/auth`
 

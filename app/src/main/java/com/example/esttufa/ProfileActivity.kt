@@ -50,11 +50,17 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun setupSettings() {
-        binding.lvSettings.adapter = SettingsAdapter(this, viewModel.settingsItems)
-        binding.lvSettings.setOnItemClickListener { _, _, position, _ ->
-            when (viewModel.settingsItems[position].id) {
-                "logout" -> showLogoutDialog()
-                else -> showComingSoon()
+        val adapter = SettingsAdapter(this, viewModel.settingsItems)
+        binding.llSettings.removeAllViews()
+        viewModel.settingsItems.forEachIndexed { index, item ->
+            adapter.getView(index, null, binding.llSettings).apply {
+                setOnClickListener {
+                    when (item.id) {
+                        "logout" -> showLogoutDialog()
+                        else -> showComingSoon()
+                    }
+                }
+                binding.llSettings.addView(this)
             }
         }
     }
