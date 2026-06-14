@@ -280,7 +280,7 @@ Validation:
 
 #### Story 6.2: Pré-aquecer a API no startup
 
-Status: Processing
+Status: Done
 Started at: 2026-06-14 15:28
 
 Acceptance criteria:
@@ -288,6 +288,10 @@ Acceptance criteria:
 - Login e Home solicitam o warming sem bloquear a interface.
 - Apenas uma chamada é disparada por sessão do processo.
 - Falhas de rede ou HTTP não geram feedback nem crash.
+
+Validation:
+
+- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-14.
 
 #### Story 6.3: Classificar imagens pela API real
 

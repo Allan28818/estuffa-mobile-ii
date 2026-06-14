@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.esttufa.adapter.CulturaAdapter
 import com.example.esttufa.databinding.ActivityHomeBinding
 import com.example.esttufa.viewmodel.HomeViewModel
+import com.example.esttufa.warming.ApiWarmingHelper
 import com.google.firebase.auth.FirebaseAuth
 
 class HomeActivity : AppCompatActivity() {
@@ -28,6 +29,7 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ApiWarmingHelper.warmUp()
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)

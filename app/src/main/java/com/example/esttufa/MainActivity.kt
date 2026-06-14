@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import com.example.esttufa.databinding.ActivityMainBinding
 import com.example.esttufa.viewmodel.LoginUiState
 import com.example.esttufa.viewmodel.LoginViewModel
+import com.example.esttufa.warming.ApiWarmingHelper
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ApiWarmingHelper.warmUp()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
