@@ -82,6 +82,8 @@
     <string name="plans_current_description">Plano atual — já assinado</string>
     <string name="plans_expand_description">Ver mais benefícios do %s</string>
     <string name="plans_collapse_description">Ver menos benefícios do %s</string>
+    <string name="plan_name_with_emoji">%1$s %2$s</string>
+    <string name="plan_benefit_bullet">• %s</string>
 
     <string name="subscription_confirm_title">Confirmar Assinatura</string>
     <string name="subscription_confirm_btn">Confirmar assinatura</string>

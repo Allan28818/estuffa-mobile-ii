@@ -444,11 +444,16 @@ Validation:
 
 #### Story 7.9: Renderizar cards de planos
 
-Status: Planned
+Status: Done
+Started at: 2026-06-14 16:18
 
 Acceptance criteria:
 
 - Adapter renderiza plano atual, recomendação, expansão e assinatura.
+
+Validation:
+
+- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-14.
 
 #### Story 7.10: Implementar o fluxo de perfil
 
