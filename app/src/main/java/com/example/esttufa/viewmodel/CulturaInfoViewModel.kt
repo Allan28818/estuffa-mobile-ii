@@ -56,14 +56,7 @@ class CulturaInfoViewModel(
         viewModelScope.launch {
             classificationRepository.predict(imagePart).fold(
                 onSuccess = { response ->
-                    val className = response.predicted_class
-                        ?.trim()
-                        ?.takeIf { it.isNotEmpty() }
-                        ?: response.class_name
-                            ?.trim()
-                            ?.takeIf { it.isNotEmpty() }
-
-                    _classificationState.value = className?.let {
+                    _classificationState.value = response.resolvedClassName()?.let {
                         ClassificationUiState.Success(it)
                     } ?: ClassificationUiState.Error("Classe nao identificada")
                 },

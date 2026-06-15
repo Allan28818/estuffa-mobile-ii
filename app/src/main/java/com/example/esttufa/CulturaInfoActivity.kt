@@ -3,7 +3,6 @@ package com.example.esttufa
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -17,11 +16,12 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import com.example.esttufa.databinding.ActivityCulturaInfoBinding
 import com.example.esttufa.viewmodel.ClassificationUiState
 import com.example.esttufa.viewmodel.CulturaInfoUiState
 import com.example.esttufa.viewmodel.CulturaInfoViewModel
-import java.io.ByteArrayOutputStream
+import java.io.File
 import java.util.Locale
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
@@ -44,6 +44,7 @@ class CulturaInfoActivity : AppCompatActivity(), SensorEventListener {
     private var isFinished = false
     private var isIrrigationLoading = false
     private var isClassificationLoading = false
+    private var pendingCameraUri: Uri? = null
 
     // Timer
     private val timerHandler = Handler(Looper.getMainLooper())
@@ -68,23 +69,30 @@ class CulturaInfoActivity : AppCompatActivity(), SensorEventListener {
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted) {
-            takePictureLauncher.launch(null)
+            launchCamera()
         } else {
             Toast.makeText(this, "Permissão de câmera negada", Toast.LENGTH_SHORT).show()
         }
     }
 
     // Launcher para tirar foto
-    private val takePictureLauncher = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
-        if (bitmap != null) {
-            processImageResult(bitmap, null)
+    private val takePictureLauncher = registerForActivityResult(
+        ActivityResultContracts.TakePicture()
+    ) { wasSaved ->
+        val capturedImageUri = pendingCameraUri
+        pendingCameraUri = null
+
+        if (wasSaved && capturedImageUri != null) {
+            processImageResult(capturedImageUri)
+        } else if (wasSaved) {
+            showClassificationError("Não foi possível acessar a foto capturada.")
         }
     }
 
     // Launcher para escolher da galeria
     private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) {
-            processImageResult(null, uri)
+            processImageResult(uri)
         }
     }
 
@@ -92,6 +100,9 @@ class CulturaInfoActivity : AppCompatActivity(), SensorEventListener {
         super.onCreate(savedInstanceState)
         binding = ActivityCulturaInfoBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        pendingCameraUri = savedInstanceState
+            ?.getString(KEY_PENDING_CAMERA_URI)
+            ?.let(Uri::parse)
 
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
@@ -142,7 +153,7 @@ class CulturaInfoActivity : AppCompatActivity(), SensorEventListener {
     private fun checkCameraPermissionAndLaunch() {
         when {
             ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED -> {
-                takePictureLauncher.launch(null)
+                launchCamera()
             }
             else -> {
                 requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA)
@@ -150,40 +161,54 @@ class CulturaInfoActivity : AppCompatActivity(), SensorEventListener {
         }
     }
 
-    private fun processImageResult(bitmap: Bitmap?, uri: Uri?) {
-        binding.tvInstrucaoFoto.visibility = View.GONE
+    private fun launchCamera() {
+        runCatching {
+            createCameraImageUri()
+        }.onSuccess { imageUri ->
+            pendingCameraUri = imageUri
+            takePictureLauncher.launch(imageUri)
+        }.onFailure {
+            showClassificationError("Não foi possível preparar a câmera.")
+        }
+    }
 
-        when {
-            bitmap != null -> binding.ivFotoResult.setImageBitmap(bitmap)
-            uri != null -> binding.ivFotoResult.setImageURI(uri)
-            else -> {
-                showClassificationError()
-                return
+    private fun createCameraImageUri(): Uri {
+        val imageDirectory = File(cacheDir, CAMERA_IMAGE_DIRECTORY).apply {
+            check(isDirectory || mkdirs()) {
+                "Não foi possível criar o diretório temporário de imagens"
             }
         }
+        val imageFile = File.createTempFile(CAMERA_FILE_PREFIX, ".jpg", imageDirectory)
+
+        return FileProvider.getUriForFile(
+            this,
+            "$packageName.fileprovider",
+            imageFile
+        )
+    }
+
+    private fun processImageResult(uri: Uri) {
+        binding.tvInstrucaoFoto.visibility = View.GONE
+        binding.cvFotoPreview.visibility = View.VISIBLE
+        binding.ivFotoResult.setImageDrawable(null)
+        binding.ivFotoResult.setImageURI(uri)
 
         val imageBytes = runCatching {
-            when {
-                bitmap != null -> ByteArrayOutputStream().use { output ->
-                    check(bitmap.compress(Bitmap.CompressFormat.JPEG, 90, output)) {
-                        "Falha ao comprimir a imagem"
-                    }
-                    output.toByteArray()
-                }
-                uri != null -> contentResolver.openInputStream(uri)?.use { input ->
-                    input.readBytes()
-                } ?: error("Nao foi possivel abrir a imagem")
-                else -> error("Imagem nao informada")
-            }
+            contentResolver.openInputStream(uri)?.use { input ->
+                input.readBytes()
+            } ?: error("Não foi possível abrir a imagem")
         }.getOrElse {
-            showClassificationError()
+            showClassificationError("Não foi possível ler a foto capturada.")
             return
         }
 
-        val requestBody = imageBytes.toRequestBody("image/*".toMediaType())
+        val mediaType = contentResolver.getType(uri)
+            ?.takeIf { it.startsWith("image/") }
+            ?: "image/jpeg"
+        val requestBody = imageBytes.toRequestBody(mediaType.toMediaType())
         val imagePart = MultipartBody.Part.createFormData(
             "image",
-            "photo.jpg",
+            if (mediaType == "image/png") "photo.png" else "photo.jpg",
             requestBody
         )
         viewModel.classifyImage(imagePart)
@@ -291,16 +316,17 @@ class CulturaInfoActivity : AppCompatActivity(), SensorEventListener {
                 }
                 is ClassificationUiState.Error -> {
                     isClassificationLoading = false
-                    showClassificationError()
+                    showClassificationError(state.message)
                     updateProgressVisibility()
                 }
             }
         }
     }
 
-    private fun showClassificationError() {
+    private fun showClassificationError(message: String) {
         binding.cvFotoReconhecida.visibility = View.GONE
         binding.cvFotoNaoReconhecida.visibility = View.VISIBLE
+        binding.tvFotoErro.text = message
     }
 
     private fun updateProgressVisibility() {
@@ -332,5 +358,16 @@ class CulturaInfoActivity : AppCompatActivity(), SensorEventListener {
         sensorManager.unregisterListener(this)
         stopWatering()
         stopVibration()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putString(KEY_PENDING_CAMERA_URI, pendingCameraUri?.toString())
+        super.onSaveInstanceState(outState)
+    }
+
+    companion object {
+        private const val CAMERA_IMAGE_DIRECTORY = "captured_images"
+        private const val CAMERA_FILE_PREFIX = "classification_"
+        private const val KEY_PENDING_CAMERA_URI = "pending_camera_uri"
     }
 }

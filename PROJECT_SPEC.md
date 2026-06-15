@@ -1,6 +1,6 @@
 # Project Spec Map
 
-Last updated: 2026-06-14
+Last updated: 2026-06-15
 
 ## Purpose
 
@@ -145,9 +145,13 @@ Important files:
 - `CulturaAdapter.kt`: renderiza nome da estufa e drawable local por cultura,
   sem URL remota.
 - `CulturaInfoActivity.kt`: sensores, câmera, classificação de imagem e
-  consulta de irrigação.
+  consulta de irrigação; captura fotos completas em cache por `FileProvider`.
 - `AndroidManifest.xml`: permissões do app; câmera declarada como hardware
-  opcional para compatibilidade com dispositivos sem o recurso.
+  opcional e provider privado para compartilhar a saída com o app de câmera.
+- `res/xml/file_paths.xml`: limita o compartilhamento ao cache
+  `captured_images`.
+- `activity_cultura_info.xml`: mantém o preview separado do estado de
+  sucesso/erro para a foto não desaparecer após a classificação.
 
 Public interfaces:
 
@@ -163,14 +167,16 @@ Dependencies:
 Data flow:
 
 - Inputs: ações do usuário e estados dos ViewModels.
-- Processing: renderização, navegação e conversão de imagens para multipart.
+- Processing: renderização, navegação, captura em resolução real e conversão
+  de imagens para multipart.
 - Outputs: lista, empty state, feedback e intents.
 
 Validation:
 
 - Tests: build, lint e smoke em emulador.
 - Manual checks: criação, recarga, imagem local e abertura de detalhes.
-- Known gaps: captura real da câmera não foi exercitada.
+- Em 2026-06-15, o smoke no emulador confirmou captura, preview, upload e
+  classificação real com resposta HTTP 200.
 
 Refactoring notes:
 
@@ -289,7 +295,8 @@ Important files:
 - `ApiService.kt`: contrato REST de irrigação, estufas, classificação
   multipart e healthcheck.
 - `PlantClassificationResponse.kt`: resposta resiliente com nomes de classe e
-  confiança opcionais.
+  confiança opcionais; prioriza o campo real `prediction` e mantém os aliases
+  legados `predicted_class` e `class_name`.
 - `StoveRequest.kt`: bodies de criação e edição.
 - `StoveResponse.kt`: mapeia identidade, nome, cultura, proprietário e
   timestamps retornados pela API.
@@ -315,6 +322,8 @@ Validation:
 
 - Tests: interceptor com doubles quando o desenho permitir.
 - Manual checks: autenticação e CRUD validados contra produção.
+- `PlantClassificationResponseTest.kt`: valida desserialização de `prediction`
+  e compatibilidade com os nomes legados.
 - Known gaps: não há teste unitário isolado do interceptor.
 
 Refactoring notes:

@@ -613,3 +613,28 @@ Validation:
   executado.
 - O envio real e o template dependem do Firebase remoto e permanecem
   pendentes de validação manual.
+
+### Epic 9: Captura de imagem para classificação
+
+#### Story 9.1: Corrigir foto capturada pela câmera
+
+Status: Done
+Started at: 2026-06-14 18:20
+
+Acceptance criteria:
+
+- A câmera salva uma foto JPEG em resolução real por meio de `FileProvider`.
+- A foto capturada aparece antes da resposta da classificação.
+- O preview permanece visível tanto no sucesso quanto no erro.
+- O multipart enviado à API contém a foto completa, não uma miniatura.
+- A resposta real da API no campo `prediction` é exibida como classe reconhecida.
+
+Validation:
+
+- `gradlew.bat testDebugUnitTest lintDebug assembleDebug --console=plain
+  --no-daemon`: BUILD SUCCESSFUL em 2026-06-15.
+- Teste unitário confirmou o JSON real
+  `{"model":"decision_tree","prediction":"tomato","confidence":null}`.
+- Smoke no emulador confirmou gravação via `FileProvider`, upload JPEG de
+  63.007 bytes, HTTP 200, preview persistente e resultado `tomato`.
+- A estufa temporária `CameraTest` foi removida após o teste.

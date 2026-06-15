@@ -219,9 +219,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
-            <!-- Card Foto Reconhecida -->
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cvFotoReconhecida"
+                android:id="@+id/cvFotoPreview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
@@ -233,6 +232,30 @@
                 app:strokeWidth="1dp"
                 app:strokeColor="#DDDDDD"
                 app:layout_constraintTop_toBottomOf="@id/tvInstrucaoFoto">
+
+                <ImageView
+                    android:id="@+id/ivFotoResult"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="Foto capturada para classificação"
+                    android:background="@drawable/bg_green_light" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Card Foto Reconhecida -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cvFotoReconhecida"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginHorizontal="24dp"
+                android:visibility="gone"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:strokeWidth="1dp"
+                app:strokeColor="#DDDDDD"
+                app:layout_constraintTop_toBottomOf="@id/cvFotoPreview">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -247,15 +270,6 @@
                         android:textColor="?attr/colorOnBackground"
                         android:textSize="16sp"
                         android:textStyle="bold" />
-
-                    <ImageView
-                        android:id="@+id/ivFotoResult"
-                        android:layout_width="match_parent"
-                        android:layout_height="180dp"
-                        android:layout_marginTop="16dp"
-                        android:scaleType="centerCrop"
-                        android:clipToOutline="true"
-                        android:background="@drawable/bg_green_light" />
 
                     <TextView
                         android:id="@+id/tvNomeCulturaResult"
@@ -273,7 +287,7 @@
                 android:id="@+id/cvFotoNaoReconhecida"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="12dp"
                 android:layout_marginHorizontal="24dp"
                 android:visibility="gone"
                 app:cardCornerRadius="12dp"
@@ -281,7 +295,7 @@
                 app:cardBackgroundColor="?attr/colorSurface"
                 app:strokeWidth="1dp"
                 app:strokeColor="#DDDDDD"
-                app:layout_constraintTop_toBottomOf="@id/tvInstrucaoFoto">
+                app:layout_constraintTop_toBottomOf="@id/cvFotoPreview">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -292,7 +306,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Sua foto não foi reconhecida"
+                        android:text="Não foi possível analisar a foto"
                         android:textColor="?attr/colorOnBackground"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -321,6 +335,7 @@
                     </LinearLayout>
 
                     <TextView
+                        android:id="@+id/tvFotoErro"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
