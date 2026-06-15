@@ -58,7 +58,7 @@ class CulturaInfoViewModel(
                 onSuccess = { response ->
                     _classificationState.value = response.resolvedClassName()?.let {
                         ClassificationUiState.Success(it)
-                    } ?: ClassificationUiState.Error("Classe nao identificada")
+                    } ?: ClassificationUiState.Error("Classe não identificada")
                 },
                 onFailure = {
                     _classificationState.value =

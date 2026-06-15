@@ -3,7 +3,8 @@ package com.example.esttufa.repository
 import com.example.esttufa.model.UserProfile
 import com.google.firebase.auth.FirebaseAuth
 
-class UserRepository(
+class
+UserRepository(
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
 ) {
 
