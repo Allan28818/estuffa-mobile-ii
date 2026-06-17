@@ -186,7 +186,8 @@ Responsibility:
 Important files:
 
 - `HomeActivity.kt`: observa `StoveResponse`, recarrega após retornos, usa o
-  nome Firebase na saudação, abre detalhes e oferece entrada para o perfil.
+  nome Firebase na saudação, abre detalhes, oferece entrada para o perfil e
+  registra acelerômetro para recarregar a lista ao detectar shake.
 - `CadastroEstufaActivity.kt`: valida o formulário, observa a criação e retorna
   `RESULT_OK` para recarregar a Home; a spec 5 adiciona `MapView`, marcador e
   coordenada selecionada apenas localmente.
@@ -243,7 +244,8 @@ Responsibility:
 
 Important files:
 
-- `HomeViewModel.kt`: lista estufas e publica estados vazio/loading.
+- `HomeViewModel.kt`: lista estufas em `Dispatchers.IO`, publica estados
+  vazio/loading e evita cargas simultâneas.
 - `CadastroEstufaViewModel.kt`: criação, mapeamento PT -> EN e mensagem
   específica para rejeições HTTP `422`.
 - `LoginViewModel.kt`: login Firebase e tradução de falhas comuns.

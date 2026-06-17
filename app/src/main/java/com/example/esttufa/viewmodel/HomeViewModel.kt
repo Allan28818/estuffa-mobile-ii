@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.esttufa.model.StoveResponse
 import com.example.esttufa.repository.CulturaRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomeViewModel : ViewModel() {
 
@@ -22,10 +24,14 @@ class HomeViewModel : ViewModel() {
     val isLoading: LiveData<Boolean> = _isLoading
 
     fun loadStoves() {
+        if (_isLoading.value == true) return
+
         viewModelScope.launch {
             _isLoading.value = true
 
-            val stoveList = repository.getStoves().getOrDefault(emptyList())
+            val stoveList = withContext(Dispatchers.IO) {
+                repository.getStoves().getOrDefault(emptyList())
+            }
 
             _stoves.value = stoveList
             _isEmpty.value = stoveList.isEmpty()

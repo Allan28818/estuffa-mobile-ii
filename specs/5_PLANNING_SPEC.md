@@ -1,5 +1,5 @@
 # Planning Spec: Implementação de Persistência Local e Sensores
-**Status**: PROCESSING
+**Status**: DONE
 **Priority**: high
 
 > [!IMPORTANT]
@@ -137,10 +137,10 @@ Phase 2 (Parallel - Implementations):
 - **Requirement ID**: `REQ-04`
 - **Execution**: Spawn concurrent subagent 🚀
 - **Done when**:
-  - [ ] SensorManager configurado e detectando shake.
-  - [ ] Lista é atualizada utilizando `Dispatchers.IO`.
-  - [ ] Gate check passes: `./gradlew assembleDebug`
-  - [ ] Test count: 0
+  - [x] SensorManager configurado e detectando shake.
+  - [x] Lista é atualizada utilizando `Dispatchers.IO`.
+  - [x] Gate check passes: `./gradlew assembleDebug`
+  - [x] Test count: 0
 - **Tests**: none
 - **Gate**: quick
 - **Commit**: `feat(sensor): add shake to refresh using Accelerometer`
