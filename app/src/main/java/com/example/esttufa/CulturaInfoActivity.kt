@@ -17,12 +17,16 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.esttufa.databinding.ActivityCulturaInfoBinding
+import com.example.esttufa.model.IrrigationResponse
+import com.example.esttufa.repository.SensorLocalRepository
 import com.example.esttufa.viewmodel.ClassificationUiState
 import com.example.esttufa.viewmodel.CulturaInfoUiState
 import com.example.esttufa.viewmodel.CulturaInfoViewModel
 import java.io.File
 import java.util.Locale
+import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -31,11 +35,13 @@ class CulturaInfoActivity : AppCompatActivity(), SensorEventListener {
 
     private lateinit var binding: ActivityCulturaInfoBinding
     private val viewModel: CulturaInfoViewModel by viewModels()
+    private lateinit var sensorLocalRepository: SensorLocalRepository
 
     // Sensores e Hardware
     private lateinit var sensorManager: SensorManager
     private var accelerometer: Sensor? = null
     private var vibrator: Vibrator? = null
+    private var stoveId: String? = null
 
     // Estado da Irrigação
     private var isPopupOpen = false
@@ -103,6 +109,8 @@ class CulturaInfoActivity : AppCompatActivity(), SensorEventListener {
         pendingCameraUri = savedInstanceState
             ?.getString(KEY_PENDING_CAMERA_URI)
             ?.let(Uri::parse)
+        stoveId = intent.getStringExtra("stove_id")
+        sensorLocalRepository = SensorLocalRepository.create(applicationContext)
 
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
@@ -289,6 +297,7 @@ class CulturaInfoActivity : AppCompatActivity(), SensorEventListener {
                     binding.tvIrrigacao.text    = "${"%.2f".format(data.irrigation_time)} seg"
                     binding.tvClassName.text    = data.class_name
                     timeLeftInMillis = (data.irrigation_time * 1000).toLong()
+                    saveSensorReading(data)
                 }
                 is CulturaInfoUiState.Error -> {
                     isIrrigationLoading = false
@@ -319,6 +328,20 @@ class CulturaInfoActivity : AppCompatActivity(), SensorEventListener {
                     showClassificationError(state.message)
                     updateProgressVisibility()
                 }
+            }
+        }
+    }
+
+    private fun saveSensorReading(data: IrrigationResponse) {
+        lifecycleScope.launch {
+            runCatching {
+                sensorLocalRepository.saveSensorReading(stoveId, data)
+            }.onFailure {
+                Toast.makeText(
+                    this@CulturaInfoActivity,
+                    "Nao foi possivel salvar a leitura offline.",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }

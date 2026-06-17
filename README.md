@@ -679,7 +679,8 @@ Validation:
 
 #### Story 10.3: Persistir leituras com Dispatchers.IO
 
-Status: Planned
+Status: Done
+Started at: 2026-06-17 00:00
 
 Acceptance criteria:
 
@@ -688,7 +689,8 @@ Acceptance criteria:
 
 Validation:
 
-- Pendente.
+- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em
+  2026-06-17.
 
 #### Story 10.4: Salvar preferências do perfil
 

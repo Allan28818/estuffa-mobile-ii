@@ -1,6 +1,6 @@
 # Project Spec Map
 
-Last updated: 2026-06-16
+Last updated: 2026-06-17
 
 ## Purpose
 
@@ -47,6 +47,8 @@ Important files:
 - `local/SensorReadingDao.kt`: operações Room de inserção e consulta das
   leituras salvas.
 - `local/RoomAppDatabase.kt`: singleton da database local `esttufa-local.db`.
+- `repository/SensorLocalRepository.kt`: adapta respostas de sensores para a
+  entidade Room e força gravações em `Dispatchers.IO`.
 
 Public interfaces:
 
@@ -59,7 +61,8 @@ Dependencies:
 
 Data flow:
 
-- Repositories locais recebem dados da camada de aplicação e gravam via DAO.
+- `CulturaInfoActivity` recebe leituras da API, o repository local adapta os
+  dados e grava via DAO em background.
 
 Validation:
 
@@ -183,7 +186,8 @@ Important files:
 - `CulturaAdapter.kt`: renderiza nome da estufa e drawable local por cultura,
   sem URL remota.
 - `CulturaInfoActivity.kt`: sensores, câmera, classificação de imagem e
-  consulta de irrigação; captura fotos completas em cache por `FileProvider`.
+  consulta de irrigação; captura fotos completas em cache por `FileProvider` e
+  salva leituras bem-sucedidas offline via `SensorLocalRepository`.
 - `AndroidManifest.xml`: permissões do app; câmera declarada como hardware
   opcional e provider privado para compartilhar a saída com o app de câmera.
 - `res/xml/file_paths.xml`: limita o compartilhamento ao cache
@@ -286,6 +290,8 @@ Important files:
 - `IrrigationRepository.kt`: consulta de irrigação.
 - `PlantClassificationRepository.kt`: envia multipart ao classificador e
   preserva falhas em `Result`.
+- `SensorLocalRepository.kt`: salva leituras de sensores no Room usando
+  `Dispatchers.IO`.
 - `UserRepository.kt`: monta o perfil a partir do Firebase Auth e mocks locais.
 - `PlanRepository.kt`: fornece o catálogo e mantém o plano atual no processo.
 

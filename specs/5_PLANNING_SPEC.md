@@ -92,9 +92,9 @@ Phase 2 (Parallel - Implementations):
 - **Requirement ID**: `REQ-01`
 - **Execution**: Spawn concurrent subagent 🚀
 - **Done when**:
-  - [ ] Repositório local de sensores criado e usando `withContext(Dispatchers.IO)`.
-  - [ ] Gate check passes: `./gradlew assembleDebug`
-  - [ ] Test count: 0
+  - [x] Repositório local de sensores criado e usando `withContext(Dispatchers.IO)`.
+  - [x] Gate check passes: `./gradlew assembleDebug`
+  - [x] Test count: 0
 - **Tests**: unit
 - **Gate**: quick
 - **Commit**: `feat(db): implement local repository with Coroutines IO`
