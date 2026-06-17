@@ -34,6 +34,42 @@ irrigação associados às culturas do usuário.
 
 ## Module Specs
 
+### Module: `local`
+
+Responsibility:
+
+- Persistir dados locais que não pertencem à sessão Firebase ou à API remota.
+
+Important files:
+
+- `local/SensorReadingEntity.kt`: entidade Room de leituras de sensores com
+  cultura, versão, temperatura, umidade, luminosidade, irrigação e timestamp.
+- `local/SensorReadingDao.kt`: operações Room de inserção e consulta das
+  leituras salvas.
+- `local/RoomAppDatabase.kt`: singleton da database local `esttufa-local.db`.
+
+Public interfaces:
+
+- `RoomAppDatabase.getInstance(context)`.
+- `SensorReadingDao.insert`, `getAll` e `getByStoveId`.
+
+Dependencies:
+
+- Android `Context` e Room runtime/KSP.
+
+Data flow:
+
+- Repositories locais recebem dados da camada de aplicação e gravam via DAO.
+
+Validation:
+
+- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-17.
+
+Refactoring notes:
+
+- Quando houver migrações, ativar schema export ou adicionar estratégia de
+  migração explícita antes de aumentar a versão da database.
+
 ### Module: `resources`
 
 Responsibility:

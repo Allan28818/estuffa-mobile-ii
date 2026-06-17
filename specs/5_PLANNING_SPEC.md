@@ -77,9 +77,9 @@ Phase 2 (Parallel - Implementations):
 - **Reuses**: None
 - **Requirement ID**: `REQ-01`
 - **Done when**:
-  - [ ] Database e classes criadas.
-  - [ ] Gate check passes: `./gradlew assembleDebug`
-  - [ ] Test count: 0
+  - [x] Database e classes criadas.
+  - [x] Gate check passes: `./gradlew assembleDebug`
+  - [x] Test count: 0
 - **Tests**: unit
 - **Gate**: quick
 - **Commit**: `feat(db): create Room database for sensor readings`
