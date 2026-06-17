@@ -133,10 +133,10 @@
                 android:textColor="?attr/colorOnBackground"
                 android:textSize="14sp" />
 
-            <com.google.android.gms.maps.MapView
+            <org.osmdroid.views.MapView
                 android:id="@+id/mapEstufa"
                 android:layout_width="match_parent"
-                android:layout_height="220dp"
+                android:layout_height="280dp"
                 android:layout_marginTop="12dp"
                 android:contentDescription="Mapa para selecionar a localizacao da estufa" />
 

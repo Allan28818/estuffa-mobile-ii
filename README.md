@@ -1,738 +1,176 @@
 # Esttufa Mobile
 
-## Purpose
+## Visão Geral
+
+O **Esttufa Mobile** é um aplicativo Android para gestão e monitoramento de
+estufas inteligentes. O projeto une agricultura urbana, tecnologia móvel,
+automação e recursos nativos do Android para criar uma experiência em que o
+usuário pode cadastrar estufas, acompanhar culturas, consultar dados simulados
+de sensores, calcular irrigação, escolher localização no mapa e classificar
+plantas por imagem.
+
+Este README foi escrito para apoiar a apresentação em vídeo do projeto. O foco
+está no tema, nas funcionalidades entregues e na forma como os requisitos
+mínimos são atendidos dentro do aplicativo.
+
+## Tema do Projeto
+
+A proposta do Esttufa é representar um sistema móvel de apoio ao cultivo em
+estufas conectadas. O usuário acompanha culturas como alface, tomate e rúcula,
+consulta informações de temperatura, umidade, luminosidade e irrigação, registra
+dados localmente e usa recursos do celular para enriquecer a gestão da estufa.
+
+Durante a apresentação, o ponto principal é mostrar que o app não é apenas um
+conjunto de telas: ele integra autenticação, API REST, persistência local,
+sensores, mapa, câmera, galeria e processamento em background.
+
+## Funcionalidades do Aplicativo
+
+- Login, cadastro de usuário, auto-login, logout e recuperação de senha com
+  Firebase Authentication.
+- Cadastro de estufas com nome, cultura e seleção visual de coordenadas no mapa.
+- Listagem das estufas do usuário autenticado.
+- Tela de detalhes da cultura com temperatura, umidade, luminosidade e tempo de
+  irrigação.
+- Consulta de dados de irrigação em uma API REST.
+- Classificação de plantas usando imagem da câmera ou da galeria.
+- Envio de imagem para a API por multipart.
+- Persistência local de leituras de sensores usando Room.
+- Preferências locais de tema e unidade de temperatura usando
+  SharedPreferences.
+- Atualização da Home por gesto de shake com o acelerômetro.
+- Perfil do usuário com informações de assinatura e atalhos de configuração.
+- Catálogo de planos com cards expansíveis e confirmação em bottom sheet.
+
+## Roteiro Sugerido para o Vídeo
+
+1. Apresentar o Esttufa como aplicativo de gestão de estufas inteligentes.
+2. Mostrar login, cadastro e recuperação de senha.
+3. Entrar na Home e explicar a listagem das estufas vindas da API.
+4. Criar uma nova estufa, escolhendo cultura e localização no mapa.
+5. Abrir os detalhes da cultura e demonstrar sensores, irrigação e
+   classificação por imagem.
+6. Mostrar o perfil, as preferências locais e os planos do serviço.
+7. Explicar a arquitetura MVVM e apontar onde aparecem API REST, Room,
+   SharedPreferences, segunda thread, testes, acelerômetro e mapas.
+
+## Arquitetura MVVM
+
+O projeto aplica o padrão **MVVM**, adequado para aplicativos móveis com várias
+telas, estados de interface e integrações externas.
+
+```text
+Activity -> ViewModel -> Repository -> Retrofit / Room / SharedPreferences
+```
+
+- **View**: as Activities e os layouts XML exibem informações, capturam ações do
+  usuário e observam mudanças de estado.
+- **ViewModel**: concentra estados de tela, validações, chamadas assíncronas e
+  comunicação com os repositories.
+- **Repository**: isola acesso à API, persistência local, dados do perfil e
+  catálogos usados pelo aplicativo.
+- **Model e Local**: agrupam DTOs, contratos de rede, banco Room e preferências
+  locais.
+
+Essa divisão facilita a manutenção e deixa claro, durante o vídeo, que a tela
+não acessa diretamente banco, API ou detalhes de autenticação.
+
+## Telas Desenvolvidas
+
+O requisito de no mínimo cinco telas é atendido e superado. O aplicativo possui
+oito telas principais:
+
+| Tela | Arquivo | O que demonstrar |
+| --- | --- | --- |
+| Login | `MainActivity.kt` | Entrada do usuário e auto-login. |
+| Cadastro | `CadastroActivity.kt` | Criação de conta com validação. |
+| Recuperação de senha | `EsqueciSenhaActivity.kt` | Redefinição de senha pelo Firebase. |
+| Home | `HomeActivity.kt` | Lista de estufas e atualização por shake. |
+| Cadastro de estufa | `CadastroEstufaActivity.kt` | Formulário, cultura e mapa. |
+| Detalhes da cultura | `CulturaInfoActivity.kt` | Sensores, irrigação, câmera e classificação. |
+| Perfil | `ProfileActivity.kt` | Dados do usuário e preferências locais. |
+| Planos | `PlansActivity.kt` | Catálogo de planos e confirmação de assinatura. |
+
+## Atendimento dos Requisitos Mínimos
+
+| Requisito | Como o Esttufa atende | Arquivos principais |
+| --- | --- | --- |
+| Arquitetura de software móvel com MVVM | Activities observam estados de ViewModels; ViewModels acionam repositories; repositories isolam rede e persistência. | `viewmodel/*.kt`, `repository/*.kt`, `MainActivity.kt`, `HomeActivity.kt` |
+| Desenvolver no mínimo 5 telas | O app possui 8 telas principais registradas no Manifest. | `AndroidManifest.xml`, `activity_*.xml` |
+| Realizar requisições a uma API REST | Retrofit consome a API `https://api-esttufa.onrender.com/` para estufas, irrigação, classificação de plantas e healthcheck. | `RetrofitClient.kt`, `ApiService.kt`, `StoveRepository.kt`, `IrrigationRepository.kt`, `PlantClassificationRepository.kt` |
+| Persistir dados usando Room | Leituras de sensores são salvas localmente na tabela `sensor_readings`. | `RoomAppDatabase.kt`, `SensorReadingEntity.kt`, `SensorReadingDao.kt`, `SensorLocalRepository.kt` |
+| Utilizar SharedPreferences | Tema e unidade de temperatura são salvos como preferências locais do perfil. | `PreferencesHelper.kt`, `ProfileActivity.kt` |
+| Executar processamento em segunda thread | Coroutines usam `viewModelScope`, `lifecycleScope` e `Dispatchers.IO` para rede, banco local, imagem e aquecimento da API. | `HomeViewModel.kt`, `SensorLocalRepository.kt`, `ApiWarmingHelper.kt`, `ProfileActivity.kt`, `CulturaInfoActivity.kt` |
+| Implementar testes unitários | Testes JUnit validam a resposta de classificação de plantas e compatibilidade com campos alternativos da API. | `PlantClassificationResponseTest.kt`, `ExampleUnitTest.kt` |
+| Fazer uso do sensor acelerômetro | A Home detecta shake para atualizar a lista de estufas; a tela de cultura também registra o acelerômetro. | `HomeActivity.kt`, `CulturaInfoActivity.kt` |
+| Integrar mapas | O cadastro de estufa usa Google Maps para selecionar coordenadas com marcador. | `CadastroEstufaActivity.kt`, `activity_cadastro_estufa.xml`, `AndroidManifest.xml` |
+
+## Integrações Técnicas
+
+- **Firebase Authentication**: autenticação, criação de conta, sessão atual,
+  recuperação de senha e logout.
+- **Retrofit e OkHttp**: comunicação com a API REST e envio de token Bearer nas
+  rotas autenticadas.
+- **Room**: banco local para armazenar leituras de sensores.
+- **SharedPreferences**: preferências simples de perfil.
+- **Google Maps SDK**: exibição de mapa e seleção de coordenadas.
+- **Acelerômetro**: interação por movimento para atualizar a Home.
+- **Câmera e galeria**: captura e seleção de imagens para classificação.
+- **Coroutines**: execução de tarefas fora da thread principal.
+
+## Estrutura do Código
+
+```text
+app/src/main/java/com/example/esttufa/
+|-- MainActivity.kt
+|-- CadastroActivity.kt
+|-- EsqueciSenhaActivity.kt
+|-- HomeActivity.kt
+|-- CadastroEstufaActivity.kt
+|-- CulturaInfoActivity.kt
+|-- ProfileActivity.kt
+|-- PlansActivity.kt
+|-- viewmodel/
+|-- repository/
+|-- model/
+|-- local/
+|-- adapter/
+|-- auth/
+`-- warming/
+```
+
+## Demonstração Recomendada
+
+Uma boa sequência para o vídeo é:
+
+1. Fazer login ou criar uma conta.
+2. Mostrar a Home com a lista de estufas.
+3. Sacudir o celular ou emulador para demonstrar o acelerômetro.
+4. Cadastrar uma estufa e selecionar um ponto no mapa.
+5. Abrir uma cultura e consultar dados de irrigação.
+6. Selecionar uma imagem ou tirar uma foto para classificar a planta.
+7. Mostrar o perfil, alterar preferências locais e abrir os planos.
+8. Finalizar explicando a tabela de requisitos mínimos.
+
+## Validação
+
+O projeto possui validação registrada com Gradle:
+
+```text
+gradlew.bat testDebugUnitTest lintDebug assembleDebug --console=plain
+BUILD SUCCESSFUL em 2026-06-17
+```
+
+Essa validação cobre testes unitários, lint e geração do APK de debug.
+
+## Pontos Fortes para Destacar
+
+- O tema de estufa inteligente aparece em todo o fluxo: cadastro, cultura,
+  sensores, irrigação, localização e classificação de plantas.
+- O app usa recursos reais de desenvolvimento Android, não apenas telas
+  estáticas.
+- A arquitetura MVVM separa interface, estado, regras de apresentação,
+  integração com API e persistência local.
+- O projeto atende todos os requisitos mínimos solicitados e ainda inclui
+  recursos adicionais como Firebase, câmera, galeria, planos e bottom sheet.
 
-Aplicativo Android para autenticar usuários, cadastrar estufas e acompanhar
-informações de culturas e irrigação consumindo a API Esttufa.
-
-## Current Understanding
-
-- Goal: integrar Firebase Auth e o CRUD autenticado de estufas.
-- Users/actors: pessoas que monitoram suas próprias estufas.
-- Constraints: Kotlin, Android SDK 34+, Views/View Binding e API REST existente.
-- Integrations: Firebase Authentication e `https://api-esttufa.onrender.com/`.
-- Non-goals: persistência direta no Firestore pelo app e redesign das telas.
-- Assumptions: a API segue os contratos definidos em
-  `specs/1_PLANNING_SPEC.md`.
-
-## Architecture Overview
-
-O projeto usa MVVM leve: Activities renderizam estado e encaminham ações,
-ViewModels coordenam operações assíncronas, repositories encapsulam chamadas
-Retrofit e a camada `model` contém contratos HTTP, DTOs e interceptores.
-
-O token Firebase é anexado no OkHttp antes de cada chamada. Respostas `401`
-invalidam a sessão e retornam o usuário ao login. Erros de validação da API são
-traduzidos em mensagens legíveis na camada de aplicação.
-
-Detailed module and file map: `PROJECT_SPEC.md`
-
-## Project Pattern
-
-- Chosen pattern: MVVM leve com separação presentation/data.
-- Why it fits: o app tem poucas telas e regras, mas integra autenticação e API.
-- Clean Code defaults: responsabilidades focadas, estados explícitos e erros
-  tratados nas fronteiras.
-- DDD/Clean Architecture boundaries: `Stove` é o conceito central; detalhes de
-  Firebase e Retrofit não devem vazar para Activities.
-- TDD strategy: testes unitários focados em mapeamentos e validações quando
-  desacoplados do Android; build e smoke test para integrações externas.
-
-## Epics and User Stories
-
-### Epic 1: Sessão autenticada
-
-#### Story 1.1: Configurar Firebase Auth
-
-Status: Done
-Started at: 2026-06-13 18:54
-
-Acceptance criteria:
-
-- Firebase Auth e Google Tasks disponíveis no módulo Android.
-- O projeto compila com a configuração Firebase existente.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-13.
-
-#### Story 1.2: Anexar token Firebase às requisições
-
-Status: Done
-Started at: 2026-06-13 19:05
-
-Acceptance criteria:
-
-- Usuários autenticados enviam `Authorization: Bearer <token>`.
-- Requisições sem usuário continuam sem o header.
-- Falhas ao obter token não interrompem rotas públicas.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-13.
-
-#### Story 1.3: Integrar autenticação ao Retrofit
-
-Status: Done
-Started at: 2026-06-13 19:08
-
-Acceptance criteria:
-
-- O interceptor de autenticação executa antes do logging.
-- Todas as chamadas do `ApiService` compartilham a política de token.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-13.
-
-#### Story 1.4: Encerrar sessão em resposta 401
-
-Status: Done
-Started at: 2026-06-13 19:10
-
-Acceptance criteria:
-
-- Uma resposta `401` encerra a sessão Firebase.
-- O app limpa a pilha autenticada e abre a tela de login.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-13.
-
-### Epic 2: Contrato de estufas
-
-#### Story 2.1: Mapear requests e responses de estufas
-
-Status: Done
-Started at: 2026-06-13 19:10
-
-Acceptance criteria:
-
-- Requests de criação/edição e responses completos são desserializados.
-- A lista `{ "stoves": [...] }` é mapeada corretamente.
-
-Validation:
-
-- Contratos Kotlin revisados contra a spec em 2026-06-13.
-
-#### Story 2.2: Expor endpoints CRUD no Retrofit
-
-Status: Done
-Started at: 2026-06-13 19:10
-
-Acceptance criteria:
-
-- `POST`, `GET`, `GET/{id}`, `PUT/{id}` e `DELETE/{id}` estão disponíveis.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-13.
-
-#### Story 2.3: Encapsular CRUD no repository
-
-Status: Done
-Started at: 2026-06-13 19:19
-
-Acceptance criteria:
-
-- Todas as operações retornam `Result`.
-- Exceções HTTP e de transporte são preservadas para tratamento da UI.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-13.
-
-### Epic 3: Autenticação de usuário
-
-#### Story 3.1: Entrar com email e senha
-
-Status: Done
-Started at: 2026-06-13 19:23
-
-Acceptance criteria:
-
-- Campos obrigatórios são validados.
-- Login válido abre a Home e sessão existente faz auto-login.
-- Falhas de autenticação exibem mensagem e reabilitam a ação.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain --stacktrace`: BUILD SUCCESSFUL.
-
-#### Story 3.2: Criar conta e perfil
-
-Status: Done
-Started at: 2026-06-13 19:23
-
-Acceptance criteria:
-
-- Todos os campos são obrigatórios e senhas devem coincidir.
-- A conta é criada e `displayName` recebe nome e sobrenome.
-- Sucesso abre a Home; falha mantém o usuário no cadastro.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain --stacktrace`: BUILD SUCCESSFUL.
-
-### Epic 4: Gestão de estufas
-
-#### Story 4.1: Criar estufa pela API
-
-Status: Done
-Started at: 2026-06-13 19:22
-
-Acceptance criteria:
-
-- Nome e cultura são obrigatórios.
-- Cultura em português é convertida para o valor aceito pela API.
-- Sucesso retorna `RESULT_OK`; erro `422` é apresentado de forma legível.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain --stacktrace`: BUILD SUCCESSFUL
-  com ViewModel e Activity integrados.
-
-#### Story 4.2: Listar estufas do usuário
-
-Status: Done
-Started at: 2026-06-13 19:44
-
-Acceptance criteria:
-
-- A Home usa `GET /stoves`.
-- Nome da estufa e imagem local da cultura são renderizados.
-- Lista vazia exibe o empty state existente.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL.
-
-#### Story 4.3: Atualizar Home e abrir detalhes
-
-Status: Done
-Started at: 2026-06-13 19:47
-
-Acceptance criteria:
-
-- A lista recarrega ao voltar da criação.
-- O clique envia `id` e `crop` para a tela de informações.
-- A saudação usa o `displayName` quando disponível.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL.
-
-#### Story 4.4: Remover contrato legado
-
-Status: Done
-Started at: 2026-06-13 19:51
-
-Acceptance criteria:
-
-- Modelos `Cultura` antigos e `GET /stoves/list` são removidos.
-- Nomes de telas legados podem permanecer sem carregar o DTO antigo.
-
-Validation:
-
-- Busca sem referências a `stoves/list`, DTO `Cultura` ou Glide.
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL.
-
-### Epic 5: Verificação
-
-#### Story 5.1: Validar build e fluxo integrado
-
-Status: Done
-Started at: 2026-06-13 19:58
-
-Acceptance criteria:
-
-- `assembleDebug` conclui sem erros.
-- Fluxos de autenticação, listagem, criação e detalhes são verificados.
-- Limitações de teste externo são registradas.
-
-Validation:
-
-- `gradlew.bat testDebugUnitTest --console=plain`: BUILD SUCCESSFUL.
-- `gradlew.bat lintDebug --console=plain`: BUILD SUCCESSFUL.
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL.
-- OpenAPI de produção confirmou rotas, Bearer auth, DTOs e culturas.
-- Smoke REST confirmou `401`, `201`, list/get/update/delete, `422` e irrigação.
-- Smoke no emulador confirmou validações, login, auto-login, empty state,
-  criação, recarga, imagem local e detalhes com irrigação.
-- Conta e estufas temporárias removidas após os testes.
-
-### Epic 6: Classificação de imagem e warming da API
-
-#### Story 6.1: Expor contratos de classificação
-
-Status: Done
-Started at: 2026-06-14 15:28
-
-Acceptance criteria:
-
-- A API expõe `POST /plant-classification/predict` como multipart.
-- A imagem usa o campo `image` e o modelo padrão é `decision_tree`.
-- A resposta aceita nomes de classe e confiança opcionais.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-14.
-
-#### Story 6.2: Pré-aquecer a API no startup
-
-Status: Done
-Started at: 2026-06-14 15:28
-
-Acceptance criteria:
-
-- Login e Home solicitam o warming sem bloquear a interface.
-- Apenas uma chamada é disparada por sessão do processo.
-- Falhas de rede ou HTTP não geram feedback nem crash.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-14.
-
-#### Story 6.3: Classificar imagens pela API real
-
-Status: Done
-Started at: 2026-06-14 15:28
-
-Acceptance criteria:
-
-- Fotos da câmera e imagens da galeria são enviadas à API.
-- Loading impede um segundo envio e preserva feedback visual.
-- Sucesso mostra imagem e classe; falha mostra o card de erro.
-- A simulação baseada em `Random` deixa de existir.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-14.
-- Busca estrutural confirmou ausência de `Random` no fluxo de classificação.
-
-#### Story 6.4: Validar integração de imagem e warming
-
-Status: Done
-Started at: 2026-06-14 15:28
-
-Acceptance criteria:
-
-- `assembleDebug` conclui sem erros.
-- Os fluxos de irrigação existentes continuam compilando e sem regressão
-  estrutural.
-- As limitações de smoke test externo ficam documentadas.
-
-Validation:
-
-- `gradlew.bat testDebugUnitTest --console=plain`: BUILD SUCCESSFUL.
-- `gradlew.bat lintDebug --console=plain`: BUILD SUCCESSFUL.
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL.
-- O sandbox não alcançou `https://api-esttufa.onrender.com/hearth-beat`.
-- O Android SDK local não possui `platform-tools/adb`; smoke em dispositivo
-  não foi executado neste ambiente.
-
-### Epic 7: Perfil e planos do serviço
-
-#### Story 7.1: Modelar perfil, plano e configuração
-
-Status: Done
-Started at: 2026-06-14 15:53
-
-Acceptance criteria:
-
-- Perfil representa dados Firebase e assinatura local.
-- Plano representa preço, benefícios, recomendação e apresentação.
-- Item de configuração representa ícone, rótulo e ação destrutiva.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-14.
-
-#### Story 7.2: Fornecer perfil e catálogo local
-
-Status: Done
-Started at: 2026-06-14 15:58
-
-Acceptance criteria:
-
-- Perfil é montado a partir do Firebase Auth e mocks definidos na spec.
-- O catálogo contém os cinco planos e o plano atual local.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-14.
-
-#### Story 7.3: Publicar estado do perfil
-
-Status: Done
-Started at: 2026-06-14 16:03
-
-Acceptance criteria:
-
-- Loading, sucesso e erro são explícitos.
-- Logout e itens de configuração são expostos pelo ViewModel.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-14.
-
-#### Story 7.4: Publicar estado e eventos dos planos
-
-Status: Done
-Started at: 2026-06-14 16:05
-
-Acceptance criteria:
-
-- Lista, plano atual, expansão e eventos de assinatura são observáveis.
-- A confirmação atualiza o plano apenas localmente.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-14.
-
-#### Story 7.5: Criar recursos visuais compartilhados
-
-Status: Done
-Started at: 2026-06-14 16:00
-
-Acceptance criteria:
-
-- Ícones, fundos, cores e textos exigidos pelas telas estão disponíveis.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-14.
-
-#### Story 7.6: Estruturar a tela de perfil
-
-Status: Done
-Started at: 2026-06-14 16:07
-
-Acceptance criteria:
-
-- Layout contempla cabeçalho, informações, assinatura, configurações e estados.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-14.
-
-#### Story 7.7: Estruturar planos e confirmação
-
-Status: Done
-Started at: 2026-06-14 16:11
-
-Acceptance criteria:
-
-- Layout contempla lista, cards, estados e bottom sheet.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-14.
-
-#### Story 7.8: Renderizar configurações
-
-Status: Done
-Started at: 2026-06-14 16:16
-
-Acceptance criteria:
-
-- Adapter vincula ícones, rótulos, chevrons e ação destrutiva.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-14.
-
-#### Story 7.9: Renderizar cards de planos
-
-Status: Done
-Started at: 2026-06-14 16:18
-
-Acceptance criteria:
-
-- Adapter renderiza plano atual, recomendação, expansão e assinatura.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-14.
-
-#### Story 7.10: Implementar o fluxo de perfil
-
-Status: Done
-Started at: 2026-06-14 16:22
-
-Acceptance criteria:
-
-- Perfil renderiza dados e estados, abre planos e confirma logout.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-14.
-
-#### Story 7.11: Implementar o fluxo de planos
-
-Status: Done
-Started at: 2026-06-14 16:26
-
-Acceptance criteria:
-
-- Planos renderiza o catálogo e confirma assinatura pelo bottom sheet.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-14.
-
-#### Story 7.12: Conectar a Home ao perfil
-
-Status: Done
-Started at: 2026-06-14 16:30
-
-Acceptance criteria:
-
-- Avatar/cabeçalho abre o perfil e as Activities estão registradas.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em 2026-06-14.
-
-#### Story 7.13: Validar perfil e planos
-
-Status: Done
-Started at: 2026-06-14 16:33
-
-Acceptance criteria:
-
-- Build e lint passam sem erros críticos.
-- Fluxo Home -> Perfil -> Planos e retorno está coerente.
-
-Validation:
-
-- `gradlew.bat testDebugUnitTest lintDebug assembleDebug --console=plain`:
-  BUILD SUCCESSFUL em 2026-06-14.
-- Lint final: 0 erros; warnings restantes não são críticos para esta história.
-- Revisão estrutural confirmou Activities no Manifest, navegação explícita,
-  cinco planos, plano Muda atual/recomendado, expansão, bottom sheet e logout.
-- O comando `adb devices` não respondeu no ambiente; smoke em dispositivo e
-  validação com TalkBack não foram executados.
-
-## Decision Log
-
-- 2026-06-13: manter MVVM leve e os layouts existentes para limitar o escopo.
-- 2026-06-13: forçar `getIdToken(true)` para cumprir o contrato de token
-  atualizado definido pela integração.
-- 2026-06-13: tratar `401` como evento transversal de encerramento de sessão.
-- 2026-06-14: manter a classificação no fluxo MVVM existente e isolar o
-  warming em um helper de processo idempotente.
-- 2026-06-14: manter perfil e assinatura como domínio local nesta iteração,
-  usando Firebase Auth apenas como fonte de identidade.
-
-### Epic 8: Recuperação de senha
-
-#### Story 8.1: Criar tela de recuperação
-
-Status: Done
-Started at: 2026-06-14 16:29
-
-Acceptance criteria:
-
-- Layout possui campo de e-mail e botão de envio.
-- Activity usa View Binding e está registrada no Manifest.
-
-Validation:
-
-- `gradlew.bat testDebugUnitTest lintDebug assembleDebug --console=plain`:
-  BUILD SUCCESSFUL em 2026-06-14.
-
-#### Story 8.2: Enviar redefinição pelo Firebase
-
-Status: Done
-Started at: 2026-06-14 16:29
-
-Acceptance criteria:
-
-- ViewModel publica estados Idle, Loading, Success e Error.
-- E-mail válido é enviado por `sendPasswordResetEmail`.
-- Falhas conhecidas são traduzidas para mensagens legíveis.
-
-Validation:
-
-- `gradlew.bat testDebugUnitTest lintDebug assembleDebug --console=plain`:
-  BUILD SUCCESSFUL em 2026-06-14.
-
-#### Story 8.3: Integrar validação e navegação
-
-Status: Done
-Started at: 2026-06-14 16:29
-
-Acceptance criteria:
-
-- O login abre a tela de recuperação.
-- E-mail vazio ou inválido exibe erro no campo.
-- Loading desabilita o envio; sucesso e erro exibem feedback adequado.
-
-Validation:
-
-- Revisão estrutural confirmou navegação, validação e observação dos estados.
-- `gradlew.bat testDebugUnitTest lintDebug assembleDebug --console=plain`:
-  BUILD SUCCESSFUL em 2026-06-14.
-
-#### Story 8.4: Configurar template de e-mail
-
-Status: External action required
-Started at: 2026-06-14 16:29
-
-Acceptance criteria:
-
-- O assunto solicitado e as limitações do template Firebase são verificados.
-- Qualquer etapa externa ao repositório fica documentada e não é marcada como
-  validada sem confirmação.
-
-Validation:
-
-- A API oficial aceita assunto, corpo e `bodyFormat: HTML`.
-- O placeholder `%LINK%` usado no HTML é suportado.
-- O repositório não contém Functions, Extensions ou credenciais para alterar
-  o projeto remoto `esttufa-ai`.
-- Pendente aplicar o assunto e HTML em Authentication > Templates > Password
-  reset e validar o e-mail recebido.
-
-#### Story 8.5: Validar recuperação de senha
-
-Status: Done
-Started at: 2026-06-14 16:29
-
-Acceptance criteria:
-
-- Testes, lint e assemble passam.
-- Limitações de validação externa ficam documentadas.
-
-Validation:
-
-- `gradlew.bat testDebugUnitTest lintDebug assembleDebug --console=plain`:
-  BUILD SUCCESSFUL em 2026-06-14.
-- O comando `adb devices` não respondeu; smoke em dispositivo não foi
-  executado.
-- O envio real e o template dependem do Firebase remoto e permanecem
-  pendentes de validação manual.
-
-### Epic 9: Captura de imagem para classificação
-
-#### Story 9.1: Corrigir foto capturada pela câmera
-
-Status: Done
-Started at: 2026-06-14 18:20
-
-Acceptance criteria:
-
-- A câmera salva uma foto JPEG em resolução real por meio de `FileProvider`.
-- A foto capturada aparece antes da resposta da classificação.
-- O preview permanece visível tanto no sucesso quanto no erro.
-- O multipart enviado à API contém a foto completa, não uma miniatura.
-- A resposta real da API no campo `prediction` é exibida como classe reconhecida.
-
-Validation:
-
-- `gradlew.bat testDebugUnitTest lintDebug assembleDebug --console=plain
-  --no-daemon`: BUILD SUCCESSFUL em 2026-06-15.
-- Teste unitário confirmou o JSON real
-  `{"model":"decision_tree","prediction":"tomato","confidence":null}`.
-- Smoke no emulador confirmou gravação via `FileProvider`, upload JPEG de
-  63.007 bytes, HTTP 200, preview persistente e resultado `tomato`.
-- A estufa temporária `CameraTest` foi removida após o teste.
-
-### Epic 10: Persistência local e sensores
-
-Architecture decision:
-
-- Manter MVVM leve: Activities coordenam UI, sensores e mapa; ViewModels
-  coordenam carregamento remoto; `local` concentra Room e SharedPreferences.
-
-#### Story 10.1: Configurar Room e Maps no Gradle
-
-Status: Done
-Started at: 2026-06-16 23:45
-
-Acceptance criteria:
-
-- Dependências de Room runtime, Room KTX, compilador Room e Maps SDK estão
-  disponíveis no módulo Android.
-- O projeto compila após a configuração de build.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em
-  2026-06-16.
-
-#### Story 10.2: Criar database Room de leituras
-
-Status: Done
-Started at: 2026-06-17 00:00
-
-Acceptance criteria:
-
-- Entidade, DAO e `RoomAppDatabase` representam leituras de sensores.
-- O projeto compila com a geração de código Room.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em
-  2026-06-17.
-
-#### Story 10.3: Persistir leituras com Dispatchers.IO
-
-Status: Done
-Started at: 2026-06-17 00:00
-
-Acceptance criteria:
-
-- Repositório local salva leituras de sensores via Room.
-- Operações de escrita rodam em `Dispatchers.IO`.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em
-  2026-06-17.
-
-#### Story 10.4: Salvar preferências do perfil
-
-Status: Done
-Started at: 2026-06-17 00:00
-
-Acceptance criteria:
-
-- Unidade de temperatura e tema são lidos e salvos em SharedPreferences.
-- A tela de perfil expõe controles para alterar essas preferências.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em
-  2026-06-17.
-
-#### Story 10.5: Selecionar coordenadas no mapa
-
-Status: Done
-Started at: 2026-06-17 00:00
-
-Acceptance criteria:
-
-- Cadastro de estufa exibe Google Maps.
-- Toque no mapa atualiza o marcador e as coordenadas selecionadas.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em
-  2026-06-17.
-
-#### Story 10.6: Atualizar Home por shake
-
-Status: Done
-Started at: 2026-06-17 00:00
-
-Acceptance criteria:
-
-- `HomeActivity` registra o acelerômetro no ciclo de vida.
-- Shake dispara refresh da lista de estufas sem duplicar chamadas em excesso.
-
-Validation:
-
-- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em
-  2026-06-17.

@@ -1,6 +1,8 @@
 package com.example.esttufa
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.MotionEvent
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -8,28 +10,27 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.esttufa.databinding.ActivityCadastroEstufaBinding
 import com.example.esttufa.viewmodel.CadastroEstufaUiState
 import com.example.esttufa.viewmodel.CadastroEstufaViewModel
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
 import java.util.Locale
+import org.osmdroid.config.Configuration
+import org.osmdroid.events.MapEventsReceiver
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.overlay.MapEventsOverlay
+import org.osmdroid.views.overlay.Marker
 
-class CadastroEstufaActivity : AppCompatActivity(), OnMapReadyCallback {
+class CadastroEstufaActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCadastroEstufaBinding
     private val viewModel: CadastroEstufaViewModel by viewModels()
-    private var googleMap: GoogleMap? = null
-    private var selectedLatLng: LatLng? = null
+    private var selectedGeoPoint: GeoPoint? = null
     private var selectedMarker: Marker? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         restoreSelectedCoordinate(savedInstanceState)
+        Configuration.getInstance().userAgentValue = packageName
         binding = ActivityCadastroEstufaBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.mapEstufa.onCreate(savedInstanceState)
 
         setupUI()
         setupMap()
@@ -59,53 +60,72 @@ class CadastroEstufaActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setupMap() {
         updateSelectedCoordinateText()
-        binding.mapEstufa.getMapAsync(this)
-    }
-
-    override fun onMapReady(map: GoogleMap) {
-        googleMap = map
-        map.uiSettings.isZoomControlsEnabled = true
-        map.uiSettings.isMapToolbarEnabled = true
-        map.setOnMapClickListener { latLng ->
-            selectCoordinate(latLng, animateCamera = true)
+        binding.mapEstufa.setOnTouchListener { view, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN,
+                MotionEvent.ACTION_MOVE -> view.parent.requestDisallowInterceptTouchEvent(true)
+                MotionEvent.ACTION_UP,
+                MotionEvent.ACTION_CANCEL -> view.parent.requestDisallowInterceptTouchEvent(false)
+            }
+            false
         }
 
-        val initialTarget = selectedLatLng ?: DEFAULT_CAMERA_TARGET
-        val initialZoom = if (selectedLatLng == null) DEFAULT_CAMERA_ZOOM else SELECTED_CAMERA_ZOOM
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(initialTarget, initialZoom))
-        selectedLatLng?.let { selectCoordinate(it, animateCamera = false) }
-    }
+        binding.mapEstufa.setTileSource(TileSourceFactory.MAPNIK)
+        binding.mapEstufa.setMultiTouchControls(true)
+        binding.mapEstufa.minZoomLevel = MIN_MAP_ZOOM
 
-    private fun selectCoordinate(latLng: LatLng, animateCamera: Boolean) {
-        selectedLatLng = latLng
-        selectedMarker?.remove()
-        selectedMarker = googleMap?.addMarker(
-            MarkerOptions()
-                .position(latLng)
-                .title("Coordenada selecionada")
+        binding.mapEstufa.overlays.add(
+            MapEventsOverlay(
+                object : MapEventsReceiver {
+                    override fun singleTapConfirmedHelper(point: GeoPoint): Boolean {
+                        selectCoordinate(point, animateCamera = true)
+                        return true
+                    }
+
+                    override fun longPressHelper(point: GeoPoint): Boolean = false
+                }
+            )
         )
 
+        val initialTarget = selectedGeoPoint ?: DEFAULT_CAMERA_TARGET
+        val initialZoom = if (selectedGeoPoint == null) DEFAULT_CAMERA_ZOOM else SELECTED_CAMERA_ZOOM
+        binding.mapEstufa.controller.setZoom(initialZoom)
+        binding.mapEstufa.controller.setCenter(initialTarget)
+        selectedGeoPoint?.let { selectCoordinate(it, animateCamera = false) }
+    }
+
+    private fun selectCoordinate(geoPoint: GeoPoint, animateCamera: Boolean) {
+        selectedGeoPoint = geoPoint
+        selectedMarker?.let(binding.mapEstufa.overlays::remove)
+        selectedMarker = Marker(binding.mapEstufa).apply {
+            position = geoPoint
+            title = "Coordenada selecionada"
+            setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+        }
+        binding.mapEstufa.overlays.add(selectedMarker)
+
         if (animateCamera) {
-            googleMap?.animateCamera(
-                CameraUpdateFactory.newLatLngZoom(latLng, SELECTED_CAMERA_ZOOM)
-            )
+            binding.mapEstufa.controller.animateTo(geoPoint)
+            binding.mapEstufa.controller.setZoom(SELECTED_CAMERA_ZOOM)
         }
 
         updateSelectedCoordinateText()
+        binding.mapEstufa.invalidate()
     }
 
     private fun updateSelectedCoordinateText() {
-        val latLng = selectedLatLng
-        binding.tvSelectedCoordinates.text = if (latLng == null) {
+        val geoPoint = selectedGeoPoint
+        binding.tvSelectedCoordinates.text = if (geoPoint == null) {
             "Nenhuma coordenada selecionada"
         } else {
             String.format(
                 Locale.US,
                 "Lat: %.6f | Lng: %.6f",
-                latLng.latitude,
-                latLng.longitude
+                geoPoint.latitude,
+                geoPoint.longitude
             )
         }
     }
@@ -115,7 +135,7 @@ class CadastroEstufaActivity : AppCompatActivity(), OnMapReadyCallback {
             KEY_HAS_SELECTED_COORDINATE
         ) ?: false
         if (hasSelectedCoordinate) {
-            selectedLatLng = LatLng(
+            selectedGeoPoint = GeoPoint(
                 savedInstanceState.getDouble(KEY_SELECTED_LATITUDE),
                 savedInstanceState.getDouble(KEY_SELECTED_LONGITUDE)
             )
@@ -161,7 +181,6 @@ class CadastroEstufaActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onStart() {
         super.onStart()
-        binding.mapEstufa.onStart()
     }
 
     override fun onResume() {
@@ -175,37 +194,34 @@ class CadastroEstufaActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     override fun onStop() {
-        binding.mapEstufa.onStop()
         super.onStop()
     }
 
     override fun onDestroy() {
-        binding.mapEstufa.onDestroy()
-        googleMap = null
+        binding.mapEstufa.onDetach()
         super.onDestroy()
     }
 
     override fun onLowMemory() {
         super.onLowMemory()
-        binding.mapEstufa.onLowMemory()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        selectedLatLng?.let { latLng ->
+        selectedGeoPoint?.let { geoPoint ->
             outState.putBoolean(KEY_HAS_SELECTED_COORDINATE, true)
-            outState.putDouble(KEY_SELECTED_LATITUDE, latLng.latitude)
-            outState.putDouble(KEY_SELECTED_LONGITUDE, latLng.longitude)
+            outState.putDouble(KEY_SELECTED_LATITUDE, geoPoint.latitude)
+            outState.putDouble(KEY_SELECTED_LONGITUDE, geoPoint.longitude)
         }
         super.onSaveInstanceState(outState)
-        binding.mapEstufa.onSaveInstanceState(outState)
     }
 
     private companion object {
-        const val DEFAULT_CAMERA_ZOOM = 4f
-        const val SELECTED_CAMERA_ZOOM = 15f
+        const val MIN_MAP_ZOOM = 3.0
+        const val DEFAULT_CAMERA_ZOOM = 15.0
+        const val SELECTED_CAMERA_ZOOM = 15.0
         const val KEY_HAS_SELECTED_COORDINATE = "has_selected_coordinate"
         const val KEY_SELECTED_LATITUDE = "selected_latitude"
         const val KEY_SELECTED_LONGITUDE = "selected_longitude"
-        val DEFAULT_CAMERA_TARGET = LatLng(-15.7801, -47.9292)
+        val DEFAULT_CAMERA_TARGET = GeoPoint(-15.7801, -47.9292)
     }
 }

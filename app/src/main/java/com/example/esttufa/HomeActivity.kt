@@ -10,11 +10,14 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.text.Html
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.esttufa.adapter.CulturaAdapter
 import com.example.esttufa.databinding.ActivityHomeBinding
+import com.example.esttufa.model.StoveResponse
 import com.example.esttufa.viewmodel.HomeViewModel
 import com.example.esttufa.warming.ApiWarmingHelper
 import com.google.firebase.auth.FirebaseAuth
@@ -88,17 +91,12 @@ class HomeActivity : AppCompatActivity(), SensorEventListener {
         }
 
         viewModel.stoves.observe(this) { stoves ->
-            binding.lvCulturas.adapter = CulturaAdapter(this, stoves)
-            binding.lvCulturas.setOnItemClickListener { _, _, position, _ ->
-                val stove = stoves[position]
-                val intent = Intent(this, CulturaInfoActivity::class.java).apply {
-                    putExtra("cultura", stove.crop)
-                    putExtra("crop", stove.crop)
-                    putExtra("stove_id", stove.id)
-                    putExtra("stove_name", stove.name)
-                }
-                startActivity(intent)
-            }
+            binding.lvCulturas.adapter = CulturaAdapter(
+                this,
+                stoves,
+                ::openStoveDetails,
+                ::confirmStoveRemoval
+            )
         }
 
         viewModel.isEmpty.observe(this) { isEmpty ->
@@ -113,6 +111,34 @@ class HomeActivity : AppCompatActivity(), SensorEventListener {
                 View.VISIBLE
             }
         }
+
+        viewModel.message.observe(this) { message ->
+            if (message.isNotBlank()) {
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                viewModel.consumeMessage()
+            }
+        }
+    }
+
+    private fun confirmStoveRemoval(stove: StoveResponse) {
+        AlertDialog.Builder(this)
+            .setTitle("Remover estufa")
+            .setMessage("Deseja remover \"${stove.name}\"? Esta acao nao pode ser desfeita.")
+            .setNegativeButton("Cancelar", null)
+            .setPositiveButton("Remover") { _, _ ->
+                viewModel.deleteStove(stove)
+            }
+            .show()
+    }
+
+    private fun openStoveDetails(stove: StoveResponse) {
+        val intent = Intent(this, CulturaInfoActivity::class.java).apply {
+            putExtra("cultura", stove.crop)
+            putExtra("crop", stove.crop)
+            putExtra("stove_id", stove.id)
+            putExtra("stove_name", stove.name)
+        }
+        startActivity(intent)
     }
 
     override fun onResume() {
