@@ -122,9 +122,9 @@ Phase 2 (Parallel - Implementations):
 - **Requirement ID**: `REQ-03`
 - **Execution**: Spawn concurrent subagent 🚀
 - **Done when**:
-  - [ ] Mapa adicionado e marcando a coordenada selecionada.
-  - [ ] Gate check passes: `./gradlew assembleDebug`
-  - [ ] Test count: 0
+  - [x] Mapa adicionado e marcando a coordenada selecionada.
+  - [x] Gate check passes: `./gradlew assembleDebug`
+  - [x] Test count: 0
 - **Tests**: none
 - **Gate**: quick
 - **Commit**: `feat(map): add Google Maps to Stove creation screen`

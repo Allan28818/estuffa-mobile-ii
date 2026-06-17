@@ -8,18 +8,31 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.esttufa.databinding.ActivityCadastroEstufaBinding
 import com.example.esttufa.viewmodel.CadastroEstufaUiState
 import com.example.esttufa.viewmodel.CadastroEstufaViewModel
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
+import java.util.Locale
 
-class CadastroEstufaActivity : AppCompatActivity() {
+class CadastroEstufaActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var binding: ActivityCadastroEstufaBinding
     private val viewModel: CadastroEstufaViewModel by viewModels()
+    private var googleMap: GoogleMap? = null
+    private var selectedLatLng: LatLng? = null
+    private var selectedMarker: Marker? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        restoreSelectedCoordinate(savedInstanceState)
         binding = ActivityCadastroEstufaBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.mapEstufa.onCreate(savedInstanceState)
 
         setupUI()
+        setupMap()
         observeViewModel()
     }
 
@@ -43,6 +56,69 @@ class CadastroEstufaActivity : AppCompatActivity() {
             if (validateFields(nome, cultura)) {
                 viewModel.createStove(nome, cultura)
             }
+        }
+    }
+
+    private fun setupMap() {
+        updateSelectedCoordinateText()
+        binding.mapEstufa.getMapAsync(this)
+    }
+
+    override fun onMapReady(map: GoogleMap) {
+        googleMap = map
+        map.uiSettings.isZoomControlsEnabled = true
+        map.uiSettings.isMapToolbarEnabled = true
+        map.setOnMapClickListener { latLng ->
+            selectCoordinate(latLng, animateCamera = true)
+        }
+
+        val initialTarget = selectedLatLng ?: DEFAULT_CAMERA_TARGET
+        val initialZoom = if (selectedLatLng == null) DEFAULT_CAMERA_ZOOM else SELECTED_CAMERA_ZOOM
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(initialTarget, initialZoom))
+        selectedLatLng?.let { selectCoordinate(it, animateCamera = false) }
+    }
+
+    private fun selectCoordinate(latLng: LatLng, animateCamera: Boolean) {
+        selectedLatLng = latLng
+        selectedMarker?.remove()
+        selectedMarker = googleMap?.addMarker(
+            MarkerOptions()
+                .position(latLng)
+                .title("Coordenada selecionada")
+        )
+
+        if (animateCamera) {
+            googleMap?.animateCamera(
+                CameraUpdateFactory.newLatLngZoom(latLng, SELECTED_CAMERA_ZOOM)
+            )
+        }
+
+        updateSelectedCoordinateText()
+    }
+
+    private fun updateSelectedCoordinateText() {
+        val latLng = selectedLatLng
+        binding.tvSelectedCoordinates.text = if (latLng == null) {
+            "Nenhuma coordenada selecionada"
+        } else {
+            String.format(
+                Locale.US,
+                "Lat: %.6f | Lng: %.6f",
+                latLng.latitude,
+                latLng.longitude
+            )
+        }
+    }
+
+    private fun restoreSelectedCoordinate(savedInstanceState: Bundle?) {
+        val hasSelectedCoordinate = savedInstanceState?.getBoolean(
+            KEY_HAS_SELECTED_COORDINATE
+        ) ?: false
+        if (hasSelectedCoordinate) {
+            selectedLatLng = LatLng(
+                savedInstanceState.getDouble(KEY_SELECTED_LATITUDE),
+                savedInstanceState.getDouble(KEY_SELECTED_LONGITUDE)
+            )
         }
     }
 
@@ -81,5 +157,55 @@ class CadastroEstufaActivity : AppCompatActivity() {
         }
 
         return nome.isNotEmpty() && cultura.isNotEmpty()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        binding.mapEstufa.onStart()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.mapEstufa.onResume()
+    }
+
+    override fun onPause() {
+        binding.mapEstufa.onPause()
+        super.onPause()
+    }
+
+    override fun onStop() {
+        binding.mapEstufa.onStop()
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        binding.mapEstufa.onDestroy()
+        googleMap = null
+        super.onDestroy()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        binding.mapEstufa.onLowMemory()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        selectedLatLng?.let { latLng ->
+            outState.putBoolean(KEY_HAS_SELECTED_COORDINATE, true)
+            outState.putDouble(KEY_SELECTED_LATITUDE, latLng.latitude)
+            outState.putDouble(KEY_SELECTED_LONGITUDE, latLng.longitude)
+        }
+        super.onSaveInstanceState(outState)
+        binding.mapEstufa.onSaveInstanceState(outState)
+    }
+
+    private companion object {
+        const val DEFAULT_CAMERA_ZOOM = 4f
+        const val SELECTED_CAMERA_ZOOM = 15f
+        const val KEY_HAS_SELECTED_COORDINATE = "has_selected_coordinate"
+        const val KEY_SELECTED_LATITUDE = "selected_latitude"
+        const val KEY_SELECTED_LONGITUDE = "selected_longitude"
+        val DEFAULT_CAMERA_TARGET = LatLng(-15.7801, -47.9292)
     }
 }

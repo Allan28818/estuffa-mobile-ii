@@ -89,6 +89,8 @@ Important files:
 - `res/drawable/bg_*.xml`: avatar, badge e destaque de plano recomendado.
 - `res/layout/activity_profile.xml`: conteúdo, estados da tela de perfil e
   controles locais de tema/unidade.
+- `res/layout/activity_cadastro_estufa.xml`: formulário de criação de estufa
+  com `MapView` para seleção visual de latitude/longitude.
 - `res/layout/item_setting.xml`: linha acessível de configuração.
 - `res/layout/activity_plans.xml`: lista e estados da tela de planos.
 - `res/layout/item_plan_card.xml`: card de plano expansível.
@@ -186,14 +188,16 @@ Important files:
 - `HomeActivity.kt`: observa `StoveResponse`, recarrega após retornos, usa o
   nome Firebase na saudação, abre detalhes e oferece entrada para o perfil.
 - `CadastroEstufaActivity.kt`: valida o formulário, observa a criação e retorna
-  `RESULT_OK` para recarregar a Home.
+  `RESULT_OK` para recarregar a Home; a spec 5 adiciona `MapView`, marcador e
+  coordenada selecionada apenas localmente.
 - `CulturaAdapter.kt`: renderiza nome da estufa e drawable local por cultura,
   sem URL remota.
 - `CulturaInfoActivity.kt`: sensores, câmera, classificação de imagem e
   consulta de irrigação; captura fotos completas em cache por `FileProvider` e
   salva leituras bem-sucedidas offline via `SensorLocalRepository`.
 - `AndroidManifest.xml`: permissões do app; câmera declarada como hardware
-  opcional e provider privado para compartilhar a saída com o app de câmera.
+  opcional, chave do Maps via `@string/google_api_key` e provider privado para
+  compartilhar a saída com o app de câmera.
 - `res/xml/file_paths.xml`: limita o compartilhamento ao cache
   `captured_images`.
 - `activity_cultura_info.xml`: mantém o preview separado do estado de

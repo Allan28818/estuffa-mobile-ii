@@ -709,7 +709,8 @@ Validation:
 
 #### Story 10.5: Selecionar coordenadas no mapa
 
-Status: Planned
+Status: Done
+Started at: 2026-06-17 00:00
 
 Acceptance criteria:
 
@@ -718,7 +719,8 @@ Acceptance criteria:
 
 Validation:
 
-- Pendente.
+- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em
+  2026-06-17.
 
 #### Story 10.6: Atualizar Home por shake
 
