@@ -49,6 +49,8 @@ Important files:
 - `local/RoomAppDatabase.kt`: singleton da database local `esttufa-local.db`.
 - `repository/SensorLocalRepository.kt`: adapta respostas de sensores para a
   entidade Room e força gravações em `Dispatchers.IO`.
+- `local/PreferencesHelper.kt`: lê e grava tema escuro e unidade de
+  temperatura em SharedPreferences.
 
 Public interfaces:
 
@@ -85,7 +87,8 @@ Important files:
 - `res/values/colors.xml`: cores de badge, erro, divisão e estado desabilitado.
 - `res/drawable/ic_*.xml`: ícones de configuração e edição.
 - `res/drawable/bg_*.xml`: avatar, badge e destaque de plano recomendado.
-- `res/layout/activity_profile.xml`: conteúdo e estados da tela de perfil.
+- `res/layout/activity_profile.xml`: conteúdo, estados da tela de perfil e
+  controles locais de tema/unidade.
 - `res/layout/item_setting.xml`: linha acessível de configuração.
 - `res/layout/activity_plans.xml`: lista e estados da tela de planos.
 - `res/layout/item_plan_card.xml`: card de plano expansível.
@@ -104,7 +107,8 @@ Responsibility:
 
 Important files:
 
-- `ProfileActivity.kt`: renderiza estado, avatar, configurações e logout.
+- `ProfileActivity.kt`: renderiza estado, avatar, configurações, preferências
+  locais de tema/unidade e logout.
 - `PlansActivity.kt`: renderiza catálogo/estados e coordena assinatura.
 - `ConfirmSubscriptionBottomSheet.kt`: resume e confirma o plano selecionado.
 - `SettingsAdapter.kt`: vincula os atalhos da seção de configurações.

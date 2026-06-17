@@ -107,9 +107,9 @@ Phase 2 (Parallel - Implementations):
 - **Requirement ID**: `REQ-02`
 - **Execution**: Spawn concurrent subagent 🚀
 - **Done when**:
-  - [ ] SharedPreferences utilizado e preferências aplicadas.
-  - [ ] Gate check passes: `./gradlew assembleDebug`
-  - [ ] Test count: 0
+  - [x] SharedPreferences utilizado e preferências aplicadas.
+  - [x] Gate check passes: `./gradlew assembleDebug`
+  - [x] Test count: 0
 - **Tests**: none
 - **Gate**: quick
 - **Commit**: `feat(profile): save theme and unit preferences locally`

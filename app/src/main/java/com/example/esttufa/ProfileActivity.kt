@@ -8,10 +8,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.esttufa.adapter.SettingsAdapter
 import com.example.esttufa.databinding.ActivityProfileBinding
+import com.example.esttufa.local.PreferencesHelper
+import com.example.esttufa.local.TemperatureUnit
 import com.example.esttufa.model.UserProfile
 import com.example.esttufa.repository.PlanRepository
 import com.example.esttufa.viewmodel.ProfileUiState
@@ -25,14 +28,18 @@ import java.net.URL
 class ProfileActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProfileBinding
+    private lateinit var preferencesHelper: PreferencesHelper
     private val viewModel: ProfileViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        preferencesHelper = PreferencesHelper(this)
+        applyTheme(preferencesHelper.isDarkThemeEnabled())
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setupToolbar()
+        setupPreferenceControls()
         setupSettings()
         setupActions()
         observeViewModel()
@@ -62,6 +69,40 @@ class ProfileActivity : AppCompatActivity() {
                 }
                 binding.llSettings.addView(this)
             }
+        }
+    }
+
+    private fun setupPreferenceControls() {
+        binding.switchDarkTheme.isChecked = preferencesHelper.isDarkThemeEnabled()
+        binding.switchDarkTheme.setOnCheckedChangeListener { _, isChecked ->
+            preferencesHelper.saveDarkThemeEnabled(isChecked)
+            applyTheme(isChecked)
+        }
+
+        val selectedUnitButton = when (preferencesHelper.getTemperatureUnit()) {
+            TemperatureUnit.CELSIUS -> binding.btnCelsius.id
+            TemperatureUnit.FAHRENHEIT -> binding.btnFahrenheit.id
+        }
+        binding.toggleTemperatureUnit.check(selectedUnitButton)
+        binding.toggleTemperatureUnit.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (!isChecked) return@addOnButtonCheckedListener
+
+            val unit = when (checkedId) {
+                binding.btnFahrenheit.id -> TemperatureUnit.FAHRENHEIT
+                else -> TemperatureUnit.CELSIUS
+            }
+            preferencesHelper.saveTemperatureUnit(unit)
+        }
+    }
+
+    private fun applyTheme(darkThemeEnabled: Boolean) {
+        val mode = if (darkThemeEnabled) {
+            AppCompatDelegate.MODE_NIGHT_YES
+        } else {
+            AppCompatDelegate.MODE_NIGHT_NO
+        }
+        if (AppCompatDelegate.getDefaultNightMode() != mode) {
+            AppCompatDelegate.setDefaultNightMode(mode)
         }
     }
 
