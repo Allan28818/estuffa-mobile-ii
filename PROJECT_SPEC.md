@@ -1,6 +1,6 @@
 # Project Spec Map
 
-Last updated: 2026-06-15
+Last updated: 2026-06-16
 
 ## Purpose
 
@@ -12,8 +12,9 @@ irrigação associados às culturas do usuário.
 - Pattern: MVVM leve.
 - Main runtime: Android/Kotlin com Activities, View Binding e LiveData.
 - Main data flow: Activity -> ViewModel -> Repository -> Retrofit/OkHttp -> API.
-- Persistence: sessão local gerenciada pelo Firebase Authentication.
-- External integrations: Firebase Auth e API REST Esttufa.
+- Persistence: sessão local gerenciada pelo Firebase Authentication; Room e
+  SharedPreferences entram na spec 5 para leituras e preferências.
+- External integrations: Firebase Auth, API REST Esttufa e Maps SDK.
 - Validation strategy: testes unitários focados, build Gradle e smoke tests.
 
 ## Module Index
@@ -26,6 +27,7 @@ irrigação associados às culturas do usuário.
 | `viewmodel` | Estado e orquestração assíncrona das telas. | `viewmodel/*.kt` | Usa LiveData e `viewModelScope`. |
 | `repository` | Fronteira das operações remotas. | `repository/*.kt` | Retorna `Result<T>`. |
 | `network/model` | Retrofit, autenticação HTTP e DTOs. | `model/*.kt` | Não deve conter estado de tela. |
+| `local` | Persistência Room e SharedPreferences. | `local/*.kt` | Introduzido pela spec 5. |
 | `profile/plans model` | Contratos locais de perfil, catálogo e configurações. | `UserProfile.kt`, `Plan.kt`, `SettingsItem.kt` | Não depende de Android UI. |
 | `warming` | Pré-aquecimento idempotente da API. | `warming/ApiWarmingHelper.kt` | Falhas são silenciosas e não bloqueiam a UI. |
 | `resources` | Layouts, strings e imagens locais. | `res/layout`, `res/drawable`, `res/values` | View Binding habilitado. |
@@ -287,7 +289,11 @@ Responsibility:
 
 Important files:
 
-- `app/build.gradle.kts`: dependências Android, Retrofit e Firebase Auth.
+- `app/build.gradle.kts`: dependências Android, Retrofit, Firebase Auth, KSP,
+  Room e Maps SDK.
+- `gradle.properties`: mantém `android.disallowKotlinSourceSets=false` para
+  permitir KSP com o Kotlin embutido do AGP 9 enquanto o plugin ainda adiciona
+  fontes geradas pela DSL de Kotlin.
 - `RetrofitClient.kt`: configura Retrofit/OkHttp com autenticação antes do
   logging para compartilhar o header entre todos os endpoints.
 - `AuthInterceptor.kt`: força a atualização do ID token, preserva requisições

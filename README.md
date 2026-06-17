@@ -638,3 +638,91 @@ Validation:
 - Smoke no emulador confirmou gravação via `FileProvider`, upload JPEG de
   63.007 bytes, HTTP 200, preview persistente e resultado `tomato`.
 - A estufa temporária `CameraTest` foi removida após o teste.
+
+### Epic 10: Persistência local e sensores
+
+Architecture decision:
+
+- Manter MVVM leve: Activities coordenam UI, sensores e mapa; ViewModels
+  coordenam carregamento remoto; `local` concentra Room e SharedPreferences.
+
+#### Story 10.1: Configurar Room e Maps no Gradle
+
+Status: Done
+Started at: 2026-06-16 23:45
+
+Acceptance criteria:
+
+- Dependências de Room runtime, Room KTX, compilador Room e Maps SDK estão
+  disponíveis no módulo Android.
+- O projeto compila após a configuração de build.
+
+Validation:
+
+- `gradlew.bat assembleDebug --console=plain`: BUILD SUCCESSFUL em
+  2026-06-16.
+
+#### Story 10.2: Criar database Room de leituras
+
+Status: Planned
+
+Acceptance criteria:
+
+- Entidade, DAO e `RoomAppDatabase` representam leituras de sensores.
+- O projeto compila com a geração de código Room.
+
+Validation:
+
+- Pendente.
+
+#### Story 10.3: Persistir leituras com Dispatchers.IO
+
+Status: Planned
+
+Acceptance criteria:
+
+- Repositório local salva leituras de sensores via Room.
+- Operações de escrita rodam em `Dispatchers.IO`.
+
+Validation:
+
+- Pendente.
+
+#### Story 10.4: Salvar preferências do perfil
+
+Status: Planned
+
+Acceptance criteria:
+
+- Unidade de temperatura e tema são lidos e salvos em SharedPreferences.
+- A tela de perfil expõe controles para alterar essas preferências.
+
+Validation:
+
+- Pendente.
+
+#### Story 10.5: Selecionar coordenadas no mapa
+
+Status: Planned
+
+Acceptance criteria:
+
+- Cadastro de estufa exibe Google Maps.
+- Toque no mapa atualiza o marcador e as coordenadas selecionadas.
+
+Validation:
+
+- Pendente.
+
+#### Story 10.6: Atualizar Home por shake
+
+Status: Planned
+
+Acceptance criteria:
+
+- `HomeActivity` registra o acelerômetro no ciclo de vida.
+- Shake dispara refresh da lista de estufas sem duplicar chamadas em excesso.
+
+Validation:
+
+- Pendente.
